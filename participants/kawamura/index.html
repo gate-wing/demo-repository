@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>和食処 川村</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --brown-dark:  #3d2b1f;
+      --brown-mid:   #5c3d2e;
+      --brown-light: #8b4513;
+      --cream:       #f5e6c8;
+      --bg:          #fdf8f2;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+      background-color: var(--bg);
+      color: var(--brown-dark);
+    }
+
+    /* =====================
+       固定ヘッダー
+    ===================== */
+    #site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 28px;
+      background: transparent;
+      transition: background 0.3s;
+    }
+
+    #site-header.scrolled {
+      background: rgba(61, 43, 31, 0.92);
+      backdrop-filter: blur(4px);
+    }
+
+    .header-logo {
+      color: #fff;
+      font-size: 1.2rem;
+      letter-spacing: 0.2em;
+      text-decoration: none;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+    }
+
+    /* WEB予約ボタン */
+    .btn-reserve {
+      display: inline-block;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.7);
+      padding: 8px 20px;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background 0.2s, color 0.2s;
+      white-space: nowrap;
+      margin-right: 20px; /* ハンバーガーとの間隔 */
+    }
+
+    .btn-reserve:hover {
+      background: rgba(255,255,255,0.15);
+    }
+
+    /* ハンバーガーボタン */
+    .hamburger {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 28px;
+      height: 20px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: #fff;
+      border-radius: 1px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+    /* ドロワーメニュー */
+    #drawer {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: min(320px, 80vw);
+      height: 100vh;
+      background: var(--brown-dark);
+      z-index: 99;
+      transition: right 0.35s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 40px;
+    }
+
+    #drawer.open { right: 0; }
+
+    #drawer nav a {
+      display: block;
+      color: var(--cream);
+      text-decoration: none;
+      font-size: 1.1rem;
+      letter-spacing: 0.2em;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      transition: color 0.2s;
+    }
+
+    #drawer nav a:hover { color: #fff; }
+
+    .drawer-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 98;
+    }
+
+    .drawer-overlay.open { display: block; }
+
+    /* =====================
+       HERO
+    ===================== */
+    #hero {
+      position: relative;
+      height: 100vh;
+      min-height: 560px;
+      /* ★ 実際の写真に差し替える場合はここのURLを変更してください */
+      background: linear-gradient(160deg, #4a3020 0%, #2a1a0e 60%, #1a0f08 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* 写真の代わりに和の質感を表現するオーバーレイ */
+    #hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 60%, rgba(139,69,19,0.25) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 30%, rgba(92,61,46,0.3) 0%, transparent 50%);
+    }
+
+    .hero-inner {
+      position: relative;
+      text-align: center;
+      color: #fff;
+      padding: 20px;
+    }
+
+    .hero-label {
+      font-size: 0.8rem;
+      letter-spacing: 0.35em;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .hero-title {
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      letter-spacing: 0.25em;
+      line-height: 1.4;
+      margin-bottom: 24px;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(0.85rem, 2vw, 1rem);
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+    }
+
+    .hero-scroll::after {
+      content: "";
+      width: 1px;
+      height: 48px;
+      background: rgba(255,255,255,0.3);
+      animation: scrollLine 1.6s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+      0%   { opacity: 1; transform: scaleY(1); transform-origin: top; }
+      100% { opacity: 0; transform: scaleY(0); transform-origin: top; }
+    }
+
+    /* =====================
+       セクション共通
+    ===================== */
+    .section {
+      padding: 100px 20px;
+    }
+
+    .section-inner {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
+      color: var(--brown-light);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      letter-spacing: 0.15em;
+      margin-bottom: 48px;
+      position: relative;
+      padding-bottom: 20px;
+    }
+
+    .section-title::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background: var(--brown-light);
+    }
+
+    /* =====================
+       コンセプト
+    ===================== */
+    #concept {
+      background: var(--bg);
+    }
+
+    .concept-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    @media (max-width: 640px) {
+      .concept-body { grid-template-columns: 1fr; gap: 36px; }
+    }
+
+    .concept-text p {
+      line-height: 2.2;
+      font-size: 1rem;
+      color: #5c4030;
+    }
+
+    .concept-text p + p { margin-top: 20px; }
+
+    .concept-image {
+      aspect-ratio: 4/5;
+      /* ★ 写真に差し替え可能 */
+      background: linear-gradient(145deg, #6b4c35, #3d2b1f);
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .concept-image::after {
+      content: "Photo";
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.2);
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+    }
+
+    /* =====================
+       メニュー
+    ===================== */
+    #menu {
+      background: #fff9f0;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 2px;
+    }
+
+    .menu-card {
+      background: #fff;
+      padding: 32px 28px;
+      border-top: 3px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .menu-card:hover {
+      border-top-color: var(--brown-light);
+    }
+
+    .menu-card-name {
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+
+    .menu-card-price {
+      font-size: 1.3rem;
+      color: var(--brown-light);
+      letter-spacing: 0.05em;
+    }
+
+    .menu-card-note {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: #9a7a60;
+      line-height: 1.6;
+    }
+
+    .menu-note {
+      margin-top: 24px;
+      font-size: 0.85rem;
+      color: #9a7a60;
+    }
+
+    /* =====================
+       空間
+    ===================== */
+    #space {
+      background: var(--bg);
+    }
+
+    .space-gallery {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 260px 260px;
+      gap: 8px;
+    }
+
+    @media (max-width: 640px) {
+      .space-gallery {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 180px 180px 180px;
+      }
+      .space-gallery .space-img:first-child {
+        grid-column: span 2;
+      }
+    }
+
+    .space-img {
+      border-radius: 2px;
+      /* ★ 写真に差し替え可能 */
+      background: linear-gradient(135deg, #6b4c35, #2a1a0e);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .space-img:first-child { grid-row: span 2; }
+
+    .space-img::after {
+      content: "Photo";
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.15);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+    }
+
+    .space-img:nth-child(2) { background: linear-gradient(135deg, #7a5a40, #4a3020); }
+    .space-img:nth-child(3) { background: linear-gradient(135deg, #5a3a25, #3d2b1f); }
+    .space-img:nth-child(4) { background: linear-gradient(135deg, #8a6545, #5c3d2e); }
+    .space-img:nth-child(5) { background: linear-gradient(135deg, #4a2e1a, #2a1a0e); }
+
+    .space-caption {
+      margin-top: 28px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #7a5c3d;
+      line-height: 2;
+      letter-spacing: 0.1em;
+    }
+
+    /* =====================
+       店舗情報
+    ===================== */
+    #info {
+      background: var(--brown-dark);
+      color: var(--cream);
+    }
+
+    #info .section-label { color: #d4b896; }
+    #info .section-title { color: #fff; }
+    #info .section-title::after { background: #d4b896; }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+    }
+
+    @media (max-width: 640px) {
+      .info-grid { grid-template-columns: 1fr; gap: 40px; }
+    }
+
+    .info-dl dt {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: #d4b896;
+      margin-bottom: 4px;
+      margin-top: 24px;
+    }
+
+    .info-dl dt:first-child { margin-top: 0; }
+
+    .info-dl dd {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.85);
+    }
+
+    /* =====================
+       フッター
+    ===================== */
+    footer {
+      background: #1a0f08;
+      color: rgba(255,255,255,0.35);
+      text-align: center;
+      padding: 28px 20px;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<header id="site-header">
+  <a href="#hero" class="header-logo">和食処 川村</a>
+  <div class="header-right">
+    <a href="#" class="btn-reserve">WEB予約</a>
+    <button class="hamburger" id="hamburger-btn" aria-label="メニューを開く">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ドロワーオーバーレイ -->
+<div class="drawer-overlay" id="drawer-overlay"></div>
+
+<!-- ドロワーメニュー -->
+<div id="drawer">
+  <nav>
+    <a href="#concept" id="nav-concept">コンセプト</a>
+    <a href="#menu" id="nav-menu">メニュー</a>
+    <a href="#space" id="nav-space">空間</a>
+    <a href="#info" id="nav-info">店舗情報</a>
+  </nav>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <p class="hero-label">Japanese Cuisine</p>
+    <h1 class="hero-title">和食処<br>川村</h1>
+    <p class="hero-subtitle">四季折々の味をお届けする、小さな和の空間</p>
+  </div>
+  <div class="hero-scroll">SCROLL</div>
+</section>
+
+<!-- コンセプト -->
+<section id="concept" class="section">
+  <div class="section-inner">
+    <p class="section-label">Concept</p>
+    <h2 class="section-title">ひと皿に、<br>季節を込めて。</h2>
+    <div class="concept-body">
+      <div class="concept-text">
+        <p>
+          旬の食材だけが持つ、みずみずしい香りと味わい。<br>
+          和食処 川村では、その日の仕入れにこだわり、<br>
+          丁寧に仕込んだ料理をお届けしています。
+        </p>
+        <p>
+          喧騒を離れ、ゆったりとした時間の中で<br>
+          日本料理の奥深さをお楽しみください。
+        </p>
+      </div>
+      <div class="concept-image">
+        <!-- ★ 写真を使う場合は <img src="画像ファイル名" alt="料理の写真"> に置き換えてください -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- メニュー -->
+<section id="menu" class="section">
+  <div class="section-inner">
+    <p class="section-label">Menu</p>
+    <h2 class="section-title">お品書き</h2>
+    <div class="menu-grid">
+      <div class="menu-card">
+        <p class="menu-card-name">日替わり定食</p>
+        <p class="menu-card-price">¥1,200</p>
+        <p class="menu-card-note">その日の仕入れによる一汁三菜</p>
+      </div>
+      <div class="menu-card">
+        <p class="menu-card-name">天ぷら定食</p>
+        <p class="menu-card-price">¥1,500</p>
+        <p class="menu-card-note">旬野菜と海老の天ぷら盛り合わせ</p>
+      </div>
+      <div class="menu-card">
+        <p class="menu-card-name">刺身定食</p>
+        <p class="menu-card-price">¥1,800</p>
+        <p class="menu-card-note">本日の鮮魚三種盛り</p>
+      </div>
+      <div class="menu-card">
+        <p class="menu-card-name">焼き魚定食</p>
+        <p class="menu-card-price">¥1,400</p>
+        <p class="menu-card-note">塩焼きまたは西京焼き</p>
+      </div>
+      <div class="menu-card">
+        <p class="menu-card-name">季節のおまかせコース</p>
+        <p class="menu-card-price">¥4,500〜</p>
+        <p class="menu-card-note">前菜・椀・造り・焼物・ご飯・水菓子</p>
+      </div>
+      <div class="menu-card">
+        <p class="menu-card-name">お子様膳</p>
+        <p class="menu-card-price">¥800</p>
+        <p class="menu-card-note">12歳以下のお子様向け</p>
+      </div>
+    </div>
+    <p class="menu-note">※メニューは仕入れ状況により変更になる場合がございます。</p>
+  </div>
+</section>
+
+<!-- 空間 -->
+<section id="space" class="section">
+  <div class="section-inner">
+    <p class="section-label">Space</p>
+    <h2 class="section-title">空間</h2>
+    <div class="space-gallery">
+      <div class="space-img">
+        <!-- ★ 写真を使う場合は <img src="画像ファイル名" alt="店内の写真"> に置き換えてください -->
+      </div>
+      <div class="space-img"></div>
+      <div class="space-img"></div>
+      <div class="space-img"></div>
+      <div class="space-img"></div>
+    </div>
+    <p class="space-caption">
+      木のぬくもりと静かな灯りに包まれた、落ち着きのある空間。<br>
+      カウンター席・テーブル席・個室をご用意しております。
+    </p>
+  </div>
+</section>
+
+<!-- 店舗情報 -->
+<section id="info" class="section">
+  <div class="section-inner">
+    <p class="section-label">Information</p>
+    <h2 class="section-title">店舗情報</h2>
+    <div class="info-grid">
+      <dl class="info-dl">
+        <dt>営業時間</dt>
+        <dd>ランチ　11:30 〜 14:00（L.O. 13:30）<br>ディナー　17:30 〜 21:00（L.O. 20:30）</dd>
+        <dt>定休日</dt>
+        <dd>毎週火曜日・第3月曜日</dd>
+        <dt>電話番号</dt>
+        <dd>03-XXXX-XXXX</dd>
+      </dl>
+      <dl class="info-dl">
+        <dt>住所</dt>
+        <dd>東京都〇〇区〇〇町1-2-3</dd>
+        <dt>アクセス</dt>
+        <dd>〇〇線「〇〇駅」徒歩5分</dd>
+        <dt>駐車場</dt>
+        <dd>なし（近隣のコインパーキングをご利用ください）</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 和食処 川村 All Rights Reserved.</p>
+</footer>
+
+<script>
+  // スクロールでヘッダー背景を変化
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ハンバーガーメニュー開閉
+  const btn     = document.getElementById('hamburger-btn');
+  const drawer  = document.getElementById('drawer');
+  const overlay = document.getElementById('drawer-overlay');
+
+  function openDrawer() {
+    btn.classList.add('open');
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+  }
+
+  function closeDrawer() {
+    btn.classList.remove('open');
+    drawer.classList.remove('open');
+    overlay.classList.remove('open');
+  }
+
+  btn.addEventListener('click', () => {
+    drawer.classList.contains('open') ? closeDrawer() : openDrawer();
+  });
+
+  overlay.addEventListener('click', closeDrawer);
+
+  // ドロワー内リンクをクリックしたら閉じる
+  drawer.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', closeDrawer);
+  });
+</script>
+
+</body>
+</html>
