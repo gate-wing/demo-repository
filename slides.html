@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AIエージェント実践講座</title>
+  <style>
+    /* ===== 基本設定 ===== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #F3F3F1;
+      --bg-alt:  #ECEAE7;
+      --text:    #2E2E2E;
+      --sub:     #6B6B6B;
+      --accent:  #C03A2B;
+      --white:   #FFFFFF;
+      --border:  #D8D5D0;
+    }
+
+    body {
+      background: #1a1a1a;
+      font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+      color: var(--text);
+    }
+
+    /* ===== スライド共通 ===== */
+    .slide {
+      display: none;
+      width: 960px;
+      min-height: 540px;
+      margin: 40px auto;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+      padding: 56px 64px;
+    }
+    .slide.active { display: flex; flex-direction: column; justify-content: center; }
+
+    /* 上部アクセントライン（全スライド共通） */
+    .slide::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--accent);
+    }
+
+    /* ===== ナビゲーション ===== */
+    #nav {
+      width: 960px;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #aaa;
+      font-size: 13px;
+    }
+    #nav button {
+      background: #333;
+      color: #ccc;
+      border: none;
+      padding: 6px 18px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background 0.15s;
+    }
+    #nav button:hover { background: var(--accent); color: #fff; }
+    #slide-counter { margin-left: auto; }
+
+    /* ===== タイトルスライド ===== */
+    .slide-title {
+      background: var(--bg);
+    }
+    .slide-title .eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .slide-title h1 {
+      font-size: 38px;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .slide-title .subtitle {
+      font-size: 16px;
+      color: var(--sub);
+      margin-bottom: 48px;
+      line-height: 1.7;
+    }
+    .slide-title .meta {
+      display: flex;
+      gap: 32px;
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+    }
+    .slide-title .meta-item {
+      font-size: 13px;
+      color: var(--sub);
+    }
+    .slide-title .meta-item span {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 4px;
+    }
+    .slide-title .accent-bar {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 6px;
+      background: var(--accent);
+    }
+
+    /* ===== セクション区切りスライド ===== */
+    .slide-section {
+      background: var(--bg-alt);
+    }
+    .slide-section .section-number {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .slide-section h2 {
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 20px;
+    }
+    .slide-section .section-desc {
+      font-size: 15px;
+      color: var(--sub);
+      line-height: 1.8;
+      max-width: 600px;
+    }
+    .slide-section .time-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 14px;
+      border-radius: 2px;
+      margin-bottom: 24px;
+    }
+
+    /* ===== コンテンツスライド共通 ===== */
+    .slide-content h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 28px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .slide-content h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 10px;
+      letter-spacing: 0.05em;
+    }
+
+    /* ===== 引用ブロック ===== */
+    .quote-block {
+      border-left: 4px solid var(--accent);
+      padding: 20px 28px;
+      background: var(--white);
+      margin: 8px 0 24px;
+      border-radius: 0 4px 4px 0;
+    }
+    .quote-block p {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .quote-block .quote-sub {
+      font-size: 14px;
+      color: var(--sub);
+      margin-top: 12px;
+      font-weight: 400;
+      line-height: 1.7;
+    }
+
+    /* ===== 箇条書き ===== */
+    .bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .bullet-list li {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.7;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .bullet-list li::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
+
+    /* ===== テーブル ===== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead tr {
+      background: var(--text);
+      color: var(--white);
+    }
+    thead th {
+      padding: 10px 16px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 13px;
+    }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:nth-child(even) { background: var(--bg-alt); }
+    tbody td { padding: 11px 16px; color: var(--text); line-height: 1.5; }
+    .td-time { color: var(--accent); font-weight: 700; white-space: nowrap; }
+    .td-label {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+
+    /* ===== 2カラムレイアウト ===== */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .col-card {
+      background: var(--white);
+      border-radius: 4px;
+      padding: 20px 22px;
+      border: 1px solid var(--border);
+    }
+    .col-card h3 {
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: 0.05em;
+    }
+    .col-card p, .col-card li {
+      font-size: 14px;
+      color: var(--sub);
+      line-height: 1.75;
+    }
+    .col-card ul { list-style: none; padding: 0; }
+    .col-card ul li { display: flex; gap: 8px; align-items: flex-start; }
+    .col-card ul li::before {
+      content: "";
+      width: 5px; height: 5px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
+
+    /* ===== ステップ表示 ===== */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .step-number {
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-body h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .step-body p {
+      font-size: 13px;
+      color: var(--sub);
+      line-height: 1.7;
+    }
+
+    /* ===== ポイントボックス ===== */
+    .point-box {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      padding: 14px 20px;
+      border-radius: 0 4px 4px 0;
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.7;
+      margin-top: 20px;
+    }
+    .point-box strong { color: var(--accent); }
+
+    /* ===== まとめスライド ===== */
+    .slide-ending h2 {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 32px;
+    }
+    .closing-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+    .closing-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--accent);
+      padding: 18px 16px;
+      border-radius: 0 0 4px 4px;
+    }
+    .closing-card .card-label {
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .closing-card p {
+      font-size: 13px;
+      color: var(--sub);
+      line-height: 1.7;
+    }
+
+    /* ===== 印刷対応 ===== */
+    @media print {
+      body { background: #fff; }
+      #nav { display: none; }
+      .slide { display: flex !important; page-break-after: always; margin: 0; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ナビゲーション -->
+<div id="nav">
+  <button onclick="changeSlide(-1)">&#8592; 前へ</button>
+  <button onclick="changeSlide(1)">次へ &#8594;</button>
+  <span id="slide-counter"></span>
+</div>
+
+<!-- ===== SLIDE 1: タイトル ===== -->
+<div class="slide slide-title active">
+  <div class="accent-bar"></div>
+  <div class="eyebrow">Management Workshop &nbsp;|&nbsp; 2026</div>
+  <h1>AIエージェント実践講座</h1>
+  <p class="subtitle">
+    自部署の業務を「バイブコーディング」で自動化・ワークフロー化する
+  </p>
+  <div class="meta">
+    <div class="meta-item">対象<span>各部署マネージャー（非エンジニア）</span></div>
+    <div class="meta-item">所要時間<span>120分</span></div>
+    <div class="meta-item">使用ツール<span>Claude / GitHub（ブラウザ操作）</span></div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 2: コアメッセージ ===== -->
+<div class="slide slide-content">
+  <h2>本研修のコア・メッセージ</h2>
+  <div class="quote-block">
+    <p>「業務のAI化とは、業務の再現性をつくることと同義であり、<br>仕事のマネジメントの一要素である」</p>
+    <p class="quote-sub">
+      優秀な担当者の頭の中にあるノウハウ（属人化）を、AIへの指示書という形で言語化・型化する。<br>
+      「誰がやっても同じ高クオリティの成果が出る仕組み」を作ることが、これからのマネージャーの重要な役割。
+    </p>
+  </div>
+  <div class="point-box">
+    <strong>今日のゴール：</strong>自部署の業務をAIで自動化するワークフローを構築し、組織の資産としてGitHubに保存する。
+  </div>
+</div>
+
+<!-- ===== SLIDE 3: タイムテーブル ===== -->
+<div class="slide slide-content">
+  <h2>タイムテーブル（全120分）</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>時間</th>
+        <th>コンテンツ</th>
+        <th>概要</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="td-time">15分</td>
+        <td><span class="td-label">1</span>&nbsp; イントロダクション</td>
+        <td>AIの組織利用、マネジメントとの関連、バイブコーディングとは</td>
+      </tr>
+      <tr>
+        <td class="td-time">25分</td>
+        <td><span class="td-label">2</span>&nbsp; 講師デモンストレーション</td>
+        <td>Claudeとのキャッチボール実演、GitHubへの保存手順</td>
+      </tr>
+      <tr>
+        <td class="td-time">60分</td>
+        <td><span class="td-label">3</span>&nbsp; ハンズオンワークショップ</td>
+        <td>自部署の業務課題設定、Claudeでの構築、GitHubへの保存</td>
+      </tr>
+      <tr>
+        <td class="td-time">20分</td>
+        <td><span class="td-label">4</span>&nbsp; 成果発表・まとめ</td>
+        <td>参加者からのシェア、今後の運用についての総括</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== SLIDE 4: Section - イントロ ===== -->
+<div class="slide slide-section">
+  <div class="section-number">SECTION 01</div>
+  <div class="time-badge">15分</div>
+  <h2>イントロダクション</h2>
+  <p class="section-desc">
+    AIエージェントの現在地を理解し、マネージャーとして「業務の再現性」をどう作るかを考える。
+  </p>
+</div>
+
+<!-- ===== SLIDE 5: AIエージェントの現在地 ===== -->
+<div class="slide slide-content">
+  <h2>AIエージェントの現在地</h2>
+  <div class="two-col">
+    <div class="col-card">
+      <h3>これまでのAI</h3>
+      <p>指示されたことだけを返す「チャットボット」。質問に答えるだけで、自分では動かない。</p>
+    </div>
+    <div class="col-card">
+      <h3>これからのAI（エージェント）</h3>
+      <p>自律的に思考し、タスクを計画・実行する。複数のステップを自分でこなす「実行者」。</p>
+    </div>
+  </div>
+  <div class="point-box" style="margin-top:24px;">
+    <strong>本日使用：</strong>最高峰の論理的思考力を持つ「Claude」（Anthropic社）。自律型AIエージェントが、AIが自ら計画・実行する時代の到来を示している。
+  </div>
+</div>
+
+<!-- ===== SLIDE 6: マネジメントと業務の再現性 ===== -->
+<div class="slide slide-content">
+  <h2>マネジメントと「業務の再現性」</h2>
+  <div class="quote-block">
+    <p>「自分でやった方が早い」からの脱却</p>
+  </div>
+  <ul class="bullet-list">
+    <li>AIは「優秀だが社内事情を知らない新入社員」と捉える</li>
+    <li>迷わず業務を完遂させるための<strong>「お仕事セット（指示書＋前提条件）」</strong>を作るのがマネージャーの役割</li>
+    <li>一度作れば、誰でも同じクオリティの成果が出せる仕組みになる</li>
+    <li>その蓄積が、部署の「知的資産」になる</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 7: バイブコーディングとは ===== -->
+<div class="slide slide-content">
+  <h2>バイブコーディングとは</h2>
+  <div class="two-col">
+    <div>
+      <h3 style="color:var(--accent);font-size:14px;margin-bottom:12px;">従来のアプローチ</h3>
+      <ul class="bullet-list">
+        <li>プログラミング言語の習得が必要</li>
+        <li>コードを一行ずつ書く</li>
+        <li>エンジニアに依頼しなければ作れない</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="color:var(--accent);font-size:14px;margin-bottom:12px;">バイブコーディング</h3>
+      <ul class="bullet-list">
+        <li>プログラミング言語は不要</li>
+        <li>日本語でAIに話しかけながら構築</li>
+        <li>直感的に業務ツールやワークフローを作れる</li>
+      </ul>
+    </div>
+  </div>
+  <div class="point-box">
+    「感覚（バイブ）」でAIと会話しながら、業務の自動化ツールを直感的に作っていく新しい開発体験。
+  </div>
+</div>
+
+<!-- ===== SLIDE 8: なぜGitHubを使うのか ===== -->
+<div class="slide slide-content">
+  <h2>なぜGitHubを使うのか</h2>
+  <div class="two-col">
+    <div class="col-card">
+      <h3>よくある誤解</h3>
+      <p>「GitHubはエンジニアがプログラムを置く場所」</p>
+    </div>
+    <div class="col-card">
+      <h3>本研修での位置づけ</h3>
+      <p>「AI時代の<strong>業務マニュアル資産管理ツール</strong>」</p>
+    </div>
+  </div>
+  <ul class="bullet-list" style="margin-top:24px;">
+    <li>作成したプロンプトやワークフローを、チーム全員がいつでも参照・利用できる</li>
+    <li>変更履歴が自動保存されるため、「以前のバージョンに戻す」が簡単</li>
+    <li>ブラウザだけで操作でき、専門知識は不要</li>
+    <li>今日の成果が、明日から使える「組織の資産」になる</li>
+  </ul>
+</div>
+
+<!-- ===== SLIDE 9: Section - デモ ===== -->
+<div class="slide slide-section">
+  <div class="section-number">SECTION 02</div>
+  <div class="time-badge">25分</div>
+  <h2>講師デモンストレーション</h2>
+  <p class="section-desc">
+    実際の業務を題材に、Claudeとのキャッチボールと、GitHubへの保存手順をリアルタイムで実演します。
+  </p>
+</div>
+
+<!-- ===== SLIDE 10: デモの内容 ===== -->
+<div class="slide slide-content">
+  <h2>デモンストレーションの流れ</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-body">
+        <h3>業務テーマを設定する</h3>
+        <p>例：「週次報告の自動要約」「企画書の骨子作成」など、実際の業務を題材に選定。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-number">2</div>
+      <div class="step-body">
+        <h3>Claudeとのキャッチボールを実演する</h3>
+        <p>一発で完璧な答えを求めず、「ここをもっと具体的に」「出力形式をテーブルにして」など、AIの回答を見ながら軌道修正していく過程を見せます。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-number">3</div>
+      <div class="step-body">
+        <h3>GitHubへ保存する（資産化）</h3>
+        <p>完成したプロンプトをテキスト化し、ブラウザ上で自分の部署フォルダに保存するまでを実演。[Add file] → [Create new file] → [Commit changes] の流れを確認します。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 11: Section - ハンズオン ===== -->
+<div class="slide slide-section">
+  <div class="section-number">SECTION 03</div>
+  <div class="time-badge">60分</div>
+  <h2>ハンズオンワークショップ</h2>
+  <p class="section-desc">
+    自部署の業務を実際に自動化してみましょう。作ったものをその場でGitHubに保存します。
+  </p>
+</div>
+
+<!-- ===== SLIDE 12: ハンズオン3ステップ ===== -->
+<div class="slide slide-content">
+  <h2>ハンズオン 3ステップ</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-body">
+        <h3>課題設定（5分）</h3>
+        <p>「再現性を持たせたい・自動化したい」業務を1つ選ぶ。実際の顧客データや機密情報はダミーに置き換えること。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-number">2</div>
+      <div class="step-body">
+        <h3>Claudeとのキャッチボールによる構築（40分）</h3>
+        <p>選んだ業務をAIに実行させるためのプロンプト・ワークフローを構築する。詰まったら講師に声をかけてください。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-number">3</div>
+      <div class="step-body">
+        <h3>GitHubへの保存（15分）</h3>
+        <p>完成した「AIへの指示書（プロンプトと手順）」を、GitHubの自分の参加者用フォルダに保存する。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 13: Section - 成果発表 ===== -->
+<div class="slide slide-section">
+  <div class="section-number">SECTION 04</div>
+  <div class="time-badge">20分</div>
+  <h2>成果発表・まとめ</h2>
+  <p class="section-desc">
+    数名のマネージャーから発表してもらい、全体でノウハウを共有します。
+  </p>
+</div>
+
+<!-- ===== SLIDE 14: まとめ ===== -->
+<div class="slide slide-ending">
+  <h2>今日の成果と、これからへ</h2>
+  <div class="closing-cards">
+    <div class="closing-card">
+      <div class="card-label">TODAY'S OUTPUT</div>
+      <p>今日GitHubに保存されたファイルは、明日から誰でも使える「新しい業務マニュアル」</p>
+    </div>
+    <div class="closing-card">
+      <div class="card-label">KEY TAKEAWAY</div>
+      <p>「業務の再現性を作る＝マネジメント」。AIへの指示書が、部署の知的資産になる</p>
+    </div>
+    <div class="closing-card">
+      <div class="card-label">NEXT STEP</div>
+      <p>このリポジトリを組織の資産として育て続ける。プロンプトは更新・改善を繰り返せる</p>
+    </div>
+  </div>
+  <div class="quote-block" style="margin-top:28px;">
+    <p style="font-size:16px;">「業務のAI化とは、業務の再現性をつくることと同義であり、<br>仕事のマネジメントの一要素である」</p>
+  </div>
+</div>
+
+<!-- ===== JavaScript ===== -->
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+
+  function showSlide(n) {
+    slides[current].classList.remove('active');
+    current = (n + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    document.getElementById('slide-counter').textContent =
+      (current + 1) + ' / ' + slides.length;
+  }
+
+  function changeSlide(dir) { showSlide(current + dir); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') changeSlide(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   changeSlide(-1);
+  });
+
+  // クリックで次へ（ナビ以外の領域）
+  document.querySelectorAll('.slide').forEach(s => {
+    s.addEventListener('click', () => changeSlide(1));
+  });
+
+  showSlide(0);
+</script>
+</body>
+</html>
