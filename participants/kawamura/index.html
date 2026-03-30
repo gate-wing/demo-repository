@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>和食処 川村</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+      background-color: #fdf8f2;
+      color: #3d2b1f;
+    }
+
+    header {
+      background-color: #5c3d2e;
+      color: #f5e6c8;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      letter-spacing: 0.2em;
+    }
+
+    header p {
+      margin-top: 8px;
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+      color: #d4b896;
+    }
+
+    nav {
+      background-color: #3d2b1f;
+      display: flex;
+      justify-content: center;
+      gap: 0;
+    }
+
+    nav a {
+      color: #f5e6c8;
+      text-decoration: none;
+      padding: 14px 28px;
+      font-size: 0.95rem;
+      letter-spacing: 0.1em;
+      transition: background 0.2s;
+    }
+
+    nav a:hover {
+      background-color: #5c3d2e;
+    }
+
+    section {
+      max-width: 860px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+    section h2 {
+      font-size: 1.6rem;
+      border-left: 5px solid #8b4513;
+      padding-left: 14px;
+      margin-bottom: 28px;
+      letter-spacing: 0.1em;
+    }
+
+    /* メニュー */
+    .menu-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .menu-table th, .menu-table td {
+      border: 1px solid #d4b896;
+      padding: 12px 16px;
+      text-align: left;
+    }
+
+    .menu-table th {
+      background-color: #5c3d2e;
+      color: #f5e6c8;
+      font-weight: normal;
+      letter-spacing: 0.05em;
+    }
+
+    .menu-table tr:nth-child(even) {
+      background-color: #fdf0e0;
+    }
+
+    /* 営業情報 */
+    .info-box {
+      background-color: #fff9f0;
+      border: 1px solid #d4b896;
+      border-radius: 6px;
+      padding: 24px 28px;
+      line-height: 2;
+    }
+
+    .info-box dt {
+      font-weight: bold;
+      color: #5c3d2e;
+      float: left;
+      width: 130px;
+    }
+
+    .info-box dd {
+      margin-left: 130px;
+    }
+
+    .info-box dl::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+
+    /* アクセス */
+    .access-box {
+      background-color: #fff9f0;
+      border: 1px solid #d4b896;
+      border-radius: 6px;
+      padding: 24px 28px;
+      line-height: 2;
+    }
+
+    /* お問い合わせ */
+    form {
+      background-color: #fff9f0;
+      border: 1px solid #d4b896;
+      border-radius: 6px;
+      padding: 28px;
+    }
+
+    form label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #5c3d2e;
+    }
+
+    form input, form textarea, form select {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 20px;
+      border: 1px solid #d4b896;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-family: inherit;
+      background-color: #fffcf8;
+    }
+
+    form button {
+      background-color: #8b4513;
+      color: white;
+      border: none;
+      padding: 12px 36px;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      letter-spacing: 0.1em;
+      transition: background 0.2s;
+    }
+
+    form button:hover {
+      background-color: #5c3d2e;
+    }
+
+    footer {
+      background-color: #3d2b1f;
+      color: #d4b896;
+      text-align: center;
+      padding: 24px;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      margin-top: 60px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>和食処 川村</h1>
+  <p>四季折々の味をお届けする、小さな和の空間</p>
+</header>
+
+<nav>
+  <a href="#menu">メニュー</a>
+  <a href="#hours">営業時間</a>
+  <a href="#access">アクセス</a>
+  <a href="#contact">ご予約・お問い合わせ</a>
+</nav>
+
+<!-- メニュー -->
+<section id="menu">
+  <h2>メニュー・料金</h2>
+  <table class="menu-table">
+    <thead>
+      <tr>
+        <th>お料理</th>
+        <th>料金（税込）</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>お昼の定食（日替わり）</td><td>¥1,200</td></tr>
+      <tr><td>天ぷら定食</td><td>¥1,500</td></tr>
+      <tr><td>刺身定食</td><td>¥1,800</td></tr>
+      <tr><td>焼き魚定食</td><td>¥1,400</td></tr>
+      <tr><td>季節のおまかせコース</td><td>¥4,500〜</td></tr>
+      <tr><td>お子様膳</td><td>¥800</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:12px; font-size:0.9rem; color:#7a5c3d;">※メニューは仕入れ状況により変更になる場合がございます。</p>
+</section>
+
+<!-- 営業時間 -->
+<section id="hours">
+  <h2>営業時間・定休日</h2>
+  <div class="info-box">
+    <dl>
+      <dt>ランチ</dt>
+      <dd>11:30 〜 14:00（ラストオーダー 13:30）</dd>
+      <dt>ディナー</dt>
+      <dd>17:30 〜 21:00（ラストオーダー 20:30）</dd>
+      <dt>定休日</dt>
+      <dd>毎週火曜日・第3月曜日</dd>
+      <dt>電話番号</dt>
+      <dd>03-XXXX-XXXX</dd>
+    </dl>
+  </div>
+</section>
+
+<!-- アクセス -->
+<section id="access">
+  <h2>お店の場所・アクセス</h2>
+  <div class="access-box">
+    <p><strong>住所：</strong>東京都〇〇区〇〇町1-2-3</p>
+    <p><strong>最寄り駅：</strong>〇〇線「〇〇駅」徒歩5分</p>
+    <p style="margin-top:16px;">※お車でお越しの方は、近隣のコインパーキングをご利用ください。</p>
+  </div>
+</section>
+
+<!-- 予約・お問い合わせ -->
+<section id="contact">
+  <h2>ご予約・お問い合わせ</h2>
+  <form>
+    <label for="name">お名前</label>
+    <input type="text" id="name" name="name" placeholder="例：山田 太郎">
+
+    <label for="email">メールアドレス</label>
+    <input type="email" id="email" name="email" placeholder="例：example@mail.com">
+
+    <label for="type">ご用件</label>
+    <select id="type" name="type">
+      <option value="">選択してください</option>
+      <option value="reserve">ご予約</option>
+      <option value="inquiry">お問い合わせ</option>
+    </select>
+
+    <label for="date">ご希望日時（ご予約の方）</label>
+    <input type="datetime-local" id="date" name="date">
+
+    <label for="message">メッセージ</label>
+    <textarea id="message" name="message" rows="5" placeholder="人数やご要望などをご記入ください"></textarea>
+
+    <button type="submit">送信する</button>
+  </form>
+</section>
+
+<footer>
+  <p>&copy; 2026 和食処 川村 All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>
