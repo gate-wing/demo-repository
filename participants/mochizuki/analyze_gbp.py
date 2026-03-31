@@ -36,8 +36,13 @@ def extract_area(address):
 
 def load_csv(filepath):
     """CSVファイルを読み込む（2行目の説明行をスキップ）"""
-    df = pd.read_csv(filepath, encoding='utf-8-sig', skiprows=[1], dtype=str)
-    return df
+    for encoding in ['cp932', 'utf-8-sig', 'utf-8']:
+        try:
+            df = pd.read_csv(filepath, encoding=encoding, skiprows=[1], dtype=str)
+            return df
+        except UnicodeDecodeError:
+            continue
+    raise ValueError(f'文字コードが判別できません: {filepath}')
 
 
 def main():
@@ -57,6 +62,8 @@ def main():
 
     for csv_file in csv_files:
         month = csv_file.stem
+        if month.endswith('.csv'):
+            month = month[:-4]
         print(f'{month} を読み込み中...')
 
         try:
