@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "文章装飾コード生成",
+  "version": "1.0",
+  "description": "選択した文章をspanタグで装飾するコードを生成します",
+  "permissions": ["scripting", "activeTab", "clipboardWrite"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}
