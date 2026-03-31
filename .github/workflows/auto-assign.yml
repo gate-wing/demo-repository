@@ -15,5 +15,4 @@ jobs:
       uses: pozil/auto-assign-issue@v1
       with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          assignees: GATEWING
-          numOfAssignee: 1
+          assignees: gate-kawam, go-okuda, mochizuki-oss, mtmt-a, nait0-git, ozeki-gma, sano-chi, sasanuma7777, saseki-alt, shitou935, yfukusaka-a11y
