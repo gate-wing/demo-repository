@@ -18,8 +18,12 @@
       --border:  #D8D5D0;
     }
 
+    html, body {
+      height: 100%;
+    }
+
     body {
-      background: #1a1a1a;
+      background: var(--bg);
       font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
       color: var(--text);
     }
@@ -27,13 +31,14 @@
     /* ===== スライド共通 ===== */
     .slide {
       display: none;
-      width: 960px;
-      min-height: 540px;
-      margin: 40px auto;
+      width: 100%;
+      min-height: calc(100vh - 48px);
+      margin: 0;
       background: var(--bg);
       position: relative;
-      overflow: hidden;
-      padding: 56px 64px;
+      overflow-y: auto;
+      padding: 4vw 10vw 6vw;
+      font-size: clamp(16px, 1.68vw, 22px); /* ベースフォントサイズ（全子要素はemで相対指定） */
     }
     .slide.active { display: flex; flex-direction: column; justify-content: center; }
 
@@ -48,22 +53,27 @@
 
     /* ===== ナビゲーション ===== */
     #nav {
-      width: 960px;
-      margin: 0 auto 16px;
+      width: 100%;
+      height: 48px;
+      padding: 0 10vw;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #2a2a2a;
       display: flex;
       align-items: center;
       gap: 12px;
       color: #aaa;
-      font-size: 13px;
+      font-size: 0.87em;
     }
     #nav button {
-      background: #333;
+      background: #444;
       color: #ccc;
       border: none;
       padding: 6px 18px;
       border-radius: 4px;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 0.87em;
       transition: background 0.15s;
     }
     #nav button:hover { background: var(--accent); color: #fff; }
@@ -74,7 +84,7 @@
       background: var(--bg);
     }
     .slide-title .eyebrow {
-      font-size: 12px;
+      font-size: 0.8em;
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--accent);
@@ -82,14 +92,14 @@
       margin-bottom: 20px;
     }
     .slide-title h1 {
-      font-size: 38px;
+      font-size: 2.5em;
       font-weight: 700;
       line-height: 1.3;
       color: var(--text);
       margin-bottom: 16px;
     }
     .slide-title .subtitle {
-      font-size: 16px;
+      font-size: 1.05em;
       color: var(--sub);
       margin-bottom: 48px;
       line-height: 1.7;
@@ -101,12 +111,12 @@
       padding-top: 24px;
     }
     .slide-title .meta-item {
-      font-size: 13px;
+      font-size: 0.87em;
       color: var(--sub);
     }
     .slide-title .meta-item span {
       display: block;
-      font-size: 15px;
+      font-size: 1em;
       font-weight: 600;
       color: var(--text);
       margin-top: 4px;
@@ -123,21 +133,21 @@
       background: var(--bg-alt);
     }
     .slide-section .section-number {
-      font-size: 11px;
+      font-size: 0.73em;
       letter-spacing: 0.2em;
       color: var(--accent);
       font-weight: 700;
       margin-bottom: 16px;
     }
     .slide-section h2 {
-      font-size: 40px;
+      font-size: 2.67em;
       font-weight: 700;
       color: var(--text);
       line-height: 1.3;
       margin-bottom: 20px;
     }
     .slide-section .section-desc {
-      font-size: 15px;
+      font-size: 1em;
       color: var(--sub);
       line-height: 1.8;
       max-width: 600px;
@@ -146,7 +156,7 @@
       display: inline-block;
       background: var(--accent);
       color: #fff;
-      font-size: 12px;
+      font-size: 0.8em;
       font-weight: 600;
       padding: 4px 14px;
       border-radius: 2px;
@@ -155,7 +165,7 @@
 
     /* ===== コンテンツスライド共通 ===== */
     .slide-content h2 {
-      font-size: 22px;
+      font-size: 1.47em;
       font-weight: 700;
       color: var(--text);
       margin-bottom: 28px;
@@ -163,7 +173,7 @@
       border-bottom: 1px solid var(--border);
     }
     .slide-content h3 {
-      font-size: 15px;
+      font-size: 1em;
       font-weight: 700;
       color: var(--accent);
       margin-bottom: 10px;
@@ -179,13 +189,13 @@
       border-radius: 0 4px 4px 0;
     }
     .quote-block p {
-      font-size: 18px;
+      font-size: 1.2em;
       font-weight: 600;
       color: var(--text);
       line-height: 1.7;
     }
     .quote-block .quote-sub {
-      font-size: 14px;
+      font-size: 0.93em;
       color: var(--sub);
       margin-top: 12px;
       font-weight: 400;
@@ -200,7 +210,7 @@
       gap: 14px;
     }
     .bullet-list li {
-      font-size: 15px;
+      font-size: 1em;
       color: var(--text);
       line-height: 1.7;
       display: flex;
@@ -222,7 +232,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 14px;
+      font-size: 0.93em;
     }
     thead tr {
       background: var(--text);
@@ -232,7 +242,7 @@
       padding: 10px 16px;
       text-align: left;
       font-weight: 600;
-      font-size: 13px;
+      font-size: 0.87em;
     }
     tbody tr { border-bottom: 1px solid var(--border); }
     tbody tr:nth-child(even) { background: var(--bg-alt); }
@@ -242,7 +252,7 @@
       display: inline-block;
       background: var(--accent);
       color: #fff;
-      font-size: 11px;
+      font-size: 0.73em;
       padding: 2px 8px;
       border-radius: 2px;
       white-space: nowrap;
@@ -261,14 +271,14 @@
       border: 1px solid var(--border);
     }
     .col-card h3 {
-      font-size: 13px;
+      font-size: 0.87em;
       color: var(--accent);
       font-weight: 700;
       margin-bottom: 10px;
       letter-spacing: 0.05em;
     }
     .col-card p, .col-card li {
-      font-size: 14px;
+      font-size: 0.93em;
       color: var(--sub);
       line-height: 1.75;
     }
@@ -295,12 +305,12 @@
       align-items: flex-start;
     }
     .step-number {
-      width: 32px;
-      height: 32px;
+      width: 2em;
+      height: 2em;
       background: var(--accent);
       color: #fff;
       border-radius: 50%;
-      font-size: 14px;
+      font-size: 0.93em;
       font-weight: 700;
       display: flex;
       align-items: center;
@@ -308,13 +318,13 @@
       flex-shrink: 0;
     }
     .step-body h3 {
-      font-size: 15px;
+      font-size: 1em;
       font-weight: 700;
       color: var(--text);
       margin-bottom: 4px;
     }
     .step-body p {
-      font-size: 13px;
+      font-size: 0.87em;
       color: var(--sub);
       line-height: 1.7;
     }
@@ -331,7 +341,7 @@
     .hitl-box {
       padding: 10px 15px;
       border-radius: 4px;
-      font-size: 13px;
+      font-size: 0.87em;
       font-weight: 600;
       text-align: center;
       white-space: nowrap;
@@ -344,12 +354,12 @@
     .hitl-check {
       background: var(--accent);
       color: #fff;
-      font-size: 12px;
+      font-size: 0.8em;
       font-weight: 700;
     }
     .hitl-arrow {
       color: var(--border);
-      font-size: 20px;
+      font-size: 1.33em;
       padding: 0 8px;
       flex-shrink: 0;
     }
@@ -358,12 +368,12 @@
       color: #fff;
       padding: 10px 18px;
       border-radius: 4px;
-      font-size: 13px;
+      font-size: 0.87em;
       font-weight: 700;
       white-space: nowrap;
     }
     .hitl-dots {
-      font-size: 18px;
+      font-size: 1.2em;
       color: var(--border);
       padding: 0 4px;
       letter-spacing: 2px;
@@ -376,7 +386,7 @@
       border-left: 4px solid var(--accent);
       padding: 14px 20px;
       border-radius: 0 4px 4px 0;
-      font-size: 14px;
+      font-size: 0.93em;
       color: var(--text);
       line-height: 1.7;
       margin-top: 20px;
@@ -385,7 +395,7 @@
 
     /* ===== まとめスライド ===== */
     .slide-ending h2 {
-      font-size: 26px;
+      font-size: 1.73em;
       font-weight: 700;
       color: var(--text);
       margin-bottom: 32px;
@@ -403,14 +413,14 @@
       border-radius: 0 0 4px 4px;
     }
     .closing-card .card-label {
-      font-size: 15px;
+      font-size: 1em;
       color: var(--accent);
       font-weight: 700;
       letter-spacing: 0.1em;
       margin-bottom: 8px;
     }
     .closing-card p {
-      font-size: 13px;
+      font-size: 0.87em;
       color: var(--sub);
       line-height: 1.7;
     }
@@ -419,7 +429,7 @@
     @media print {
       body { background: #fff; }
       #nav { display: none; }
-      .slide { display: flex !important; page-break-after: always; margin: 0; width: 100%; }
+      .slide { display: flex !important; page-break-after: always; margin: 0; width: 100%; min-height: 100vh; padding: 56px 10%; }
     }
   </style>
 </head>
@@ -466,7 +476,7 @@
 
 <!-- ===== SLIDE 3: タイムテーブル ===== -->
 <div class="slide slide-content">
-  <h2>タイムテーブル（全120分）</h2>
+  <h2>目次</h2>
   <table>
     <thead>
       <tr>
@@ -478,12 +488,12 @@
     <tbody>
       <tr>
         <td class="td-time">前半</td>
-        <td><span class="td-label">1</span>&nbsp; イントロダクション</td>
+        <td><span class="td-label">1</span>&nbsp; イントロ</td>
         <td>AIの組織利用、マネジメントとの関連、バイブコーディングとは</td>
       </tr>
       <tr>
         <td></td>
-        <td><span class="td-label">2</span>&nbsp; デモンストレーション</td>
+        <td><span class="td-label">2</span>&nbsp; デモ/td>
         <td>Claudeとのキャッチボール実演、GitHubへの保存手順</td>
       </tr>
       <tr>
@@ -506,7 +516,7 @@
   <div class="time-badge">15分</div>
   <h2>イントロダクション</h2>
   <p class="section-desc">
-    AIエージェントの現在地を理解し、仕事のマネジメントの一環として「業務の再現性」をどう作るかを考える。
+    AIエージェントの現在地を理解し、<br>仕事のマネジメントの一環として<br>「業務の再現性」をどう作るかを考える。
   </p>
 </div>
 
@@ -578,8 +588,7 @@
   <div style="display:flex; align-items:center; gap:16px; margin: 24px 0 20px;">
 
     <!-- 3つの小ブロック -->
-    <div style="display:flex; flex-direction:column; gap:10px; flex:1;">
-      
+    <div style="display:flex; flex-direction:column; justify-content:center; gap:10px; flex:2;">
       <div style="display:flex; align-items:center; gap:8px;">
         <div class="hitl-box hitl-task" style="flex:1; text-align:center;">小さな自動化</div>
         <div class="hitl-arrow">&#8594;</div>
@@ -595,20 +604,20 @@
         <div class="hitl-arrow">&#8594;</div>
         <div class="hitl-box hitl-check" style="flex:1; text-align:center;">人間が確認</div>
       </div>
-      <div style="font-size:11px; color:var(--accent); font-weight:700; letter-spacing:0.08em; margin-bottom:2px;">
+      <div style="font-size:0.75em; color:var(--accent); font-weight:700; letter-spacing:0.08em; margin-top:2px;">
         ※ 人間が確認を挟む工程を「ヒューマンインザループ」と呼ぶ
       </div>
     </div>
 
     <!-- 統合の矢印 -->
-    <div style="display:flex; flex-direction:column; align-items:center; gap:2px; color:var(--border); font-size:22px; line-height:1;">
+    <div style="display:flex; flex-direction:column; align-items:center; gap:4px; color:var(--border); font-size:1.4em; line-height:1; flex-shrink:0;">
       <span>&#8599;</span>
       <span>&#8594;</span>
       <span>&#8600;</span>
     </div>
 
     <!-- 大きな自動化 -->
-    <div class="hitl-box hitl-result" style="padding: 24px 20px; font-size:15px; white-space:nowrap;">
+    <div class="hitl-box hitl-result" style="flex:1; display:flex; align-items:center; justify-content:center; font-size:1.2em; min-height:8em;">
       大きな<br>自動化
     </div>
 
