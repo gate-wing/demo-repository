@@ -19,11 +19,42 @@ function copyToClipboard(code) {
   });
 }
 
-function generateCode(selectedText, style) {
-  return `<span style="${style}">${selectedText}</span>`;
-}
+// チェックボックスとカラーピッカーの連動
+document.getElementById("chk-color").addEventListener("change", (e) => {
+  document.getElementById("pick-color").disabled = !e.target.checked;
+});
 
-function getSelectedTextAndGenerate(styleCallback) {
+document.getElementById("chk-marker").addEventListener("change", (e) => {
+  document.getElementById("pick-marker").disabled = !e.target.checked;
+});
+
+// コピーボタン
+document.getElementById("btn-copy").addEventListener("click", () => {
+  const sizeValue = document.querySelector('input[name="size"]:checked').value;
+  const useColor = document.getElementById("chk-color").checked;
+  const useMarker = document.getElementById("chk-marker").checked;
+
+  // 何も選ばれていない場合
+  if (sizeValue === "none" && !useColor && !useMarker) {
+    showError("装飾を一つ以上選んでください");
+    return;
+  }
+
+  // styleを組み立てる
+  const styles = [];
+  if (sizeValue === "large") styles.push("font-size: 1.2em;");
+  if (sizeValue === "small") styles.push("font-size: 0.8em;");
+  if (useColor) {
+    const color = document.getElementById("pick-color").value;
+    styles.push(`color: ${color};`);
+  }
+  if (useMarker) {
+    const color = document.getElementById("pick-marker").value;
+    styles.push(`background-color: ${color};`);
+  }
+
+  const styleStr = styles.join(" ");
+
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const tabId = tabs[0].id;
     chrome.tabs.sendMessage(tabId, { action: "getSelectedText" }, (response) => {
@@ -36,26 +67,8 @@ function getSelectedTextAndGenerate(styleCallback) {
         showError("文章が選択されていません");
         return;
       }
-      const code = generateCode(text, styleCallback());
+      const code = `<span style="${styleStr}">${text}</span>`;
       copyToClipboard(code);
     });
   });
-}
-
-document.getElementById("btn-larger").addEventListener("click", () => {
-  getSelectedTextAndGenerate(() => "font-size: 1.2em;");
-});
-
-document.getElementById("btn-smaller").addEventListener("click", () => {
-  getSelectedTextAndGenerate(() => "font-size: 0.8em;");
-});
-
-document.getElementById("btn-color").addEventListener("click", () => {
-  const color = document.getElementById("pick-color").value;
-  getSelectedTextAndGenerate(() => `color: ${color};`);
-});
-
-document.getElementById("btn-marker").addEventListener("click", () => {
-  const color = document.getElementById("pick-marker").value;
-  getSelectedTextAndGenerate(() => `background-color: ${color};`);
 });
