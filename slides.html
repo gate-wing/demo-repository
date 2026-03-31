@@ -319,6 +319,56 @@
       line-height: 1.7;
     }
 
+    /* ===== ヒューマンインザループ フロー図 ===== */
+    .hitl-flow {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin: 28px 0 20px;
+      flex-wrap: nowrap;
+      justify-content: center;
+    }
+    .hitl-box {
+      padding: 10px 15px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .hitl-task {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .hitl-check {
+      background: var(--accent);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .hitl-arrow {
+      color: var(--border);
+      font-size: 20px;
+      padding: 0 8px;
+      flex-shrink: 0;
+    }
+    .hitl-result {
+      background: var(--text);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .hitl-dots {
+      font-size: 18px;
+      color: var(--border);
+      padding: 0 4px;
+      letter-spacing: 2px;
+    }
+
     /* ===== ポイントボックス ===== */
     .point-box {
       background: var(--white);
@@ -490,7 +540,38 @@
   </ul>
 </div>
 
-<!-- ===== SLIDE 7: バイブコーディングとは ===== -->
+<!-- ===== SLIDE 7: ヒューマンインザループ ===== -->
+<div class="slide slide-content">
+  <h2>大きな自動化は「小さな一歩」の積み重ね</h2>
+  <div class="hitl-flow">
+    <div class="hitl-box hitl-task">小さな<br>自動化</div>
+    <div class="hitl-arrow">&#8594;</div>
+    <div class="hitl-box hitl-check">人間が<br>チェック</div>
+    <div class="hitl-arrow">&#8594;</div>
+    <div class="hitl-box hitl-task">小さな<br>自動化</div>
+    <div class="hitl-arrow">&#8594;</div>
+    <div class="hitl-box hitl-check">人間が<br>チェック</div>
+    <div class="hitl-arrow">&#8594;</div>
+    <div class="hitl-dots">&#8230;</div>
+    <div class="hitl-arrow">&#8594;</div>
+    <div class="hitl-box hitl-result">大きな<br>自動化</div>
+  </div>
+  <div class="two-col">
+    <div class="col-card">
+      <h3>ヒューマンインザループとは</h3>
+      <p>AIが処理を進める各工程に、人間が確認・判断を挟む仕組みのこと。現時点では、AIを完全に独り立ちさせるのではなく、人間が要所でチェックすることで品質と安全性を担保する。</p>
+    </div>
+    <div class="col-card">
+      <h3>だからこそ、小さく始める</h3>
+      <p>最初から全工程を自動化しようとしなくていい。「この一作業だけAIに任せてみる」という小さな積み重ねが、やがて部署全体の大きな自動化につながる。</p>
+    </div>
+  </div>
+  <div class="point-box">
+    <strong>今日の研修の位置づけ：</strong>その「最初の小さな一歩」を、実際に手を動かして体験する場です。
+  </div>
+</div>
+
+<!-- ===== SLIDE 8: バイブコーディングとは ===== -->
 <div class="slide slide-content">
   <h2>バイブコーディングとは</h2>
   <div class="two-col">
@@ -516,7 +597,7 @@
   </div>
 </div>
 
-<!-- ===== SLIDE 8: なぜGitHubを使うのか ===== -->
+<!-- ===== SLIDE 9: なぜGitHubを使うのか ===== -->
 <div class="slide slide-content">
   <h2>なぜGitHubを使うのか</h2>
   <div class="two-col">
@@ -537,7 +618,7 @@
   </ul>
 </div>
 
-<!-- ===== SLIDE 9: Section - デモ ===== -->
+<!-- ===== SLIDE 10: Section - デモ ===== -->
 <div class="slide slide-section">
   <div class="section-number">SECTION 02</div>
   <div class="time-badge">25分</div>
@@ -547,7 +628,7 @@
   </p>
 </div>
 
-<!-- ===== SLIDE 10: デモの内容 ===== -->
+<!-- ===== SLIDE 11: デモの内容 ===== -->
 <div class="slide slide-content">
   <h2>デモンストレーションの流れ</h2>
   <div class="steps">
@@ -575,7 +656,7 @@
   </div>
 </div>
 
-<!-- ===== SLIDE 11: Section - ハンズオン ===== -->
+<!-- ===== SLIDE 12: Section - ハンズオン ===== -->
 <div class="slide slide-section">
   <div class="section-number">SECTION 03</div>
   <div class="time-badge">60分</div>
@@ -585,7 +666,7 @@
   </p>
 </div>
 
-<!-- ===== SLIDE 12: ハンズオン3ステップ ===== -->
+<!-- ===== SLIDE 13: ハンズオン3ステップ ===== -->
 <div class="slide slide-content">
   <h2>ハンズオン 3ステップ</h2>
   <div class="steps">
@@ -613,7 +694,7 @@
   </div>
 </div>
 
-<!-- ===== SLIDE 13: Section - 成果発表 ===== -->
+<!-- ===== SLIDE 14: Section - 成果発表 ===== -->
 <div class="slide slide-section">
   <div class="section-number">SECTION 04</div>
   <div class="time-badge">20分</div>
@@ -623,7 +704,7 @@
   </p>
 </div>
 
-<!-- ===== SLIDE 14: まとめ ===== -->
+<!-- ===== SLIDE 15: まとめ ===== -->
 <div class="slide slide-ending">
   <h2>今日の成果と、これからへ</h2>
   <div class="closing-cards">
