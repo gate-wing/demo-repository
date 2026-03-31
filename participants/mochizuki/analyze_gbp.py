@@ -2,6 +2,8 @@ import pandas as pd
 import re
 import os
 from pathlib import Path
+from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+from openpyxl.utils import get_column_letter
 
 # 東京23区のリスト
 WARDS_23 = [
@@ -155,6 +157,153 @@ def main():
         combined[['月', 'エリア', 'ビジネス名', '住所', '表示回数', 'アクション数', 'アクション率(%)']].to_excel(
             writer, sheet_name='全データ', index=False
         )
+
+        # レポートサマリーシートを作成
+        wb = writer.book
+        ws = wb.create_sheet('レポートサマリー', 0)
+
+        # スタイル定義
+        title_font = Font(name='メイリオ', size=16, bold=True, color='FFFFFF')
+        header_font = Font(name='メイリオ', size=12, bold=True, color='FFFFFF')
+        body_font = Font(name='メイリオ', size=11)
+        label_font = Font(name='メイリオ', size=11, bold=True)
+
+        blue_fill = PatternFill(fill_type='solid', fgColor='2E75B6')
+        light_blue_fill = PatternFill(fill_type='solid', fgColor='BDD7EE')
+        gray_fill = PatternFill(fill_type='solid', fgColor='595959')
+        green_fill = PatternFill(fill_type='solid', fgColor='70AD47')
+        orange_fill = PatternFill(fill_type='solid', fgColor='ED7D31')
+
+        center = Alignment(horizontal='center', vertical='center', wrap_text=True)
+        left = Alignment(horizontal='left', vertical='center', wrap_text=True)
+
+        # タイトル
+        ws.merge_cells('A1:F1')
+        ws['A1'] = 'Googleビジネスプロフィール 分析レポート'
+        ws['A1'].font = title_font
+        ws['A1'].fill = blue_fill
+        ws['A1'].alignment = center
+        ws.row_dimensions[1].height = 40
+
+        # 分析期間
+        ws.merge_cells('A2:F2')
+        ws['A2'] = f'分析期間：{combined["月"].min()} 〜 {combined["月"].max()}　／　対象店舗数：{combined["ビジネス名"].nunique()} 店舗'
+        ws['A2'].font = Font(name='メイリオ', size=11, color='FFFFFF')
+        ws['A2'].fill = gray_fill
+        ws['A2'].alignment = center
+        ws.row_dimensions[2].height = 25
+
+        ws.row_dimensions[3].height = 15
+
+        # ── 全体サマリー ──
+        ws.merge_cells('A4:F4')
+        ws['A4'] = '■ 全体サマリー'
+        ws['A4'].font = Font(name='メイリオ', size=12, bold=True, color='FFFFFF')
+        ws['A4'].fill = gray_fill
+        ws['A4'].alignment = left
+        ws.row_dimensions[4].height = 25
+
+        total_display = int(combined['表示回数'].sum())
+        total_action = int(combined['アクション数'].sum())
+        total_rate = round(total_action / total_display * 100, 2) if total_display > 0 else 0
+        best_month = monthly.loc[monthly['アクション率(%)'].idxmax(), '月']
+        worst_month = monthly.loc[monthly['アクション率(%)'].idxmin(), '月']
+        best_area = area.iloc[0]['エリア']
+        top_action_area = area.loc[area['アクション率(%)'].idxmax(), 'エリア']
+
+        summary_data = [
+            ('総表示回数', f'{total_display:,} 回'),
+            ('総アクション数', f'{total_action:,} 回'),
+            ('平均アクション率', f'{total_rate} %'),
+            ('最もアクション率が高い月', best_month),
+            ('最もアクション率が低い月', worst_month),
+            ('表示回数トップエリア', best_area),
+            ('アクション率トップエリア', top_action_area),
+        ]
+
+        for i, (label, value) in enumerate(summary_data):
+            row = 5 + i
+            ws.merge_cells(f'A{row}:C{row}')
+            ws.merge_cells(f'D{row}:F{row}')
+            ws[f'A{row}'] = label
+            ws[f'A{row}'].font = label_font
+            ws[f'A{row}'].fill = light_blue_fill
+            ws[f'A{row}'].alignment = left
+            ws[f'D{row}'] = value
+            ws[f'D{row}'].font = body_font
+            ws[f'D{row}'].alignment = left
+            ws.row_dimensions[row].height = 22
+
+        ws.row_dimensions[5 + len(summary_data)].height = 15
+
+        # ── 月別トレンド ──
+        trend_start = 5 + len(summary_data) + 1
+        ws.merge_cells(f'A{trend_start}:F{trend_start}')
+        ws[f'A{trend_start}'] = '■ 月別トレンド'
+        ws[f'A{trend_start}'].font = Font(name='メイリオ', size=12, bold=True, color='FFFFFF')
+        ws[f'A{trend_start}'].fill = gray_fill
+        ws[f'A{trend_start}'].alignment = left
+        ws.row_dimensions[trend_start].height = 25
+
+        headers = ['月', '表示回数', 'アクション数', '店舗数', 'アクション率(%)']
+        header_row = trend_start + 1
+        for col_i, h in enumerate(headers, 1):
+            cell = ws.cell(row=header_row, column=col_i, value=h)
+            cell.font = Font(name='メイリオ', size=10, bold=True, color='FFFFFF')
+            cell.fill = blue_fill
+            cell.alignment = center
+        ws.row_dimensions[header_row].height = 20
+
+        for r_i, row_data in monthly.iterrows():
+            data_row = header_row + 1 + r_i
+            values = [row_data['月'], int(row_data['表示回数合計']), int(row_data['アクション数合計']),
+                      int(row_data['店舗数']), row_data['アクション率(%)']]
+            for col_i, val in enumerate(values, 1):
+                cell = ws.cell(row=data_row, column=col_i, value=val)
+                cell.font = body_font
+                cell.alignment = center
+                if r_i % 2 == 0:
+                    cell.fill = PatternFill(fill_type='solid', fgColor='EBF3FB')
+            ws.row_dimensions[data_row].height = 20
+
+        area_start = header_row + 1 + len(monthly) + 2
+
+        # ── エリア別ランキング ──
+        ws.merge_cells(f'A{area_start}:F{area_start}')
+        ws[f'A{area_start}'] = '■ エリア別ランキング（表示回数順）'
+        ws[f'A{area_start}'].font = Font(name='メイリオ', size=12, bold=True, color='FFFFFF')
+        ws[f'A{area_start}'].fill = gray_fill
+        ws[f'A{area_start}'].alignment = left
+        ws.row_dimensions[area_start].height = 25
+
+        area_headers = ['エリア', '表示回数', 'アクション数', '店舗数', 'アクション率(%)']
+        area_header_row = area_start + 1
+        for col_i, h in enumerate(area_headers, 1):
+            cell = ws.cell(row=area_header_row, column=col_i, value=h)
+            cell.font = Font(name='メイリオ', size=10, bold=True, color='FFFFFF')
+            cell.fill = blue_fill
+            cell.alignment = center
+        ws.row_dimensions[area_header_row].height = 20
+
+        for r_i, row_data in area.reset_index(drop=True).iterrows():
+            data_row = area_header_row + 1 + r_i
+            values = [row_data['エリア'], int(row_data['表示回数合計']), int(row_data['アクション数合計']),
+                      int(row_data['店舗数']), row_data['アクション率(%)']]
+            for col_i, val in enumerate(values, 1):
+                cell = ws.cell(row=data_row, column=col_i, value=val)
+                cell.font = body_font
+                cell.alignment = center
+                if r_i % 2 == 0:
+                    cell.fill = PatternFill(fill_type='solid', fgColor='EBF3FB')
+            ws.row_dimensions[data_row].height = 20
+
+        # 列幅を調整
+        ws.column_dimensions['A'].width = 28
+        ws.column_dimensions['B'].width = 18
+        ws.column_dimensions['C'].width = 18
+        ws.column_dimensions['D'].width = 18
+        ws.column_dimensions['E'].width = 18
+        ws.column_dimensions['F'].width = 18
 
     print(f'\n完了！{output_file} を開いて結果を確認してください。')
     print(f'\n概要:')
