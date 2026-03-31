@@ -300,14 +300,14 @@ def main():
         area_start = header_row + 1 + len(monthly) + 2
 
         # ── エリア別ランキング ──
-        ws.merge_cells(f'A{area_start}:I{area_start}')
+        ws.merge_cells(f'A{area_start}:J{area_start}')
         ws[f'A{area_start}'] = '■ エリア別ランキング（表示回数順）'
         ws[f'A{area_start}'].font = Font(name='メイリオ', size=12, bold=True, color='FFFFFF')
         ws[f'A{area_start}'].fill = gray_fill
         ws[f'A{area_start}'].alignment = left
         ws.row_dimensions[area_start].height = 25
 
-        area_headers = ['エリア', '表示回数合計', '表示回数平均', '表示回数中央値', 'アクション数合計', 'アクション数平均', 'アクション数中央値', 'アクション率平均(%)', 'アクション率中央値(%)']
+        area_headers = ['エリア', '店舗数', '表示回数合計', '表示回数平均', '表示回数中央値', 'アクション数合計', 'アクション数平均', 'アクション数中央値', 'アクション率平均(%)', 'アクション率中央値(%)']
         area_header_row = area_start + 1
         for col_i, h in enumerate(area_headers, 1):
             cell = ws.cell(row=area_header_row, column=col_i, value=h)
@@ -319,7 +319,7 @@ def main():
         for r_i, row_data in area.reset_index(drop=True).iterrows():
             data_row = area_header_row + 1 + r_i
             values = [
-                row_data['エリア'], int(row_data['表示回数合計']), row_data['表示回数平均'], row_data['表示回数中央値'],
+                row_data['エリア'], int(row_data['店舗数']), int(row_data['表示回数合計']), row_data['表示回数平均'], row_data['表示回数中央値'],
                 int(row_data['アクション数合計']), row_data['アクション数平均'], row_data['アクション数中央値'],
                 row_data['アクション率平均'], row_data['アクション率中央値']
             ]
@@ -341,6 +341,7 @@ def main():
         ws.column_dimensions['G'].width = 16
         ws.column_dimensions['H'].width = 18
         ws.column_dimensions['I'].width = 18
+        ws.column_dimensions['J'].width = 18
 
     print(f'\n完了！{output_file} を開いて結果を確認してください。')
     print(f'\n概要:')
