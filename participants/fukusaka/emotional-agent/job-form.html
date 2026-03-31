@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>求職者応募フォーム | 株式会社エモーショナルエージェント</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <div class="inner">
+      <div class="logo">
+        <a href="index.html">株式会社エモーショナルエージェント</a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="about.html">私たちについて</a></li>
+          <li><a href="services.html">事業内容</a></li>
+          <li><a href="staff.html">スタッフ紹介</a></li>
+          <li><a href="careers.html">採用情報</a></li>
+          <li><a href="contact.html">お問い合わせ</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="page-hero">
+    <h1>求職者応募フォーム</h1>
+    <p>まずはお気軽にご登録ください</p>
+  </div>
+
+  <section>
+    <div class="container">
+      <p style="text-align:center; color:#555; margin-bottom: 40px; font-size: 0.95rem;">
+        ご登録いただいた内容をもとに、担当のキャリアアドバイザーよりご連絡いたします。<br>
+        ご希望やご状況をお伺いしながら、最適な求人をご提案します。
+      </p>
+      <div class="form-wrap">
+        <form action="#" method="post">
+
+          <div class="form-group">
+            <label>お名前<span class="required">必須</span></label>
+            <input type="text" name="name" placeholder="例：山田 太郎">
+          </div>
+
+          <div class="form-group">
+            <label>お名前（ふりがな）<span class="required">必須</span></label>
+            <input type="text" name="name_kana" placeholder="例：やまだ たろう">
+          </div>
+
+          <div class="form-group">
+            <label>メールアドレス<span class="required">必須</span></label>
+            <input type="email" name="email" placeholder="例：example@email.com">
+          </div>
+
+          <div class="form-group">
+            <label>電話番号<span class="required">必須</span></label>
+            <input type="tel" name="tel" placeholder="例：090-0000-0000">
+          </div>
+
+          <div class="form-group">
+            <label>お住まいの都道府県</label>
+            <select name="prefecture">
+              <option value="">選択してください</option>
+              <option>北海道</option><option>青森県</option><option>岩手県</option>
+              <option>宮城県</option><option>秋田県</option><option>山形県</option>
+              <option>福島県</option><option>茨城県</option><option>栃木県</option>
+              <option>群馬県</option><option>埼玉県</option><option>千葉県</option>
+              <option>東京都</option><option>神奈川県</option><option>新潟県</option>
+              <option>富山県</option><option>石川県</option><option>福井県</option>
+              <option>山梨県</option><option>長野県</option><option>岐阜県</option>
+              <option>静岡県</option><option>愛知県</option><option>三重県</option>
+              <option>滋賀県</option><option>京都府</option><option>大阪府</option>
+              <option>兵庫県</option><option>奈良県</option><option>和歌山県</option>
+              <option>鳥取県</option><option>島根県</option><option>岡山県</option>
+              <option>広島県</option><option>山口県</option><option>徳島県</option>
+              <option>香川県</option><option>愛媛県</option><option>高知県</option>
+              <option>福岡県</option><option>佐賀県</option><option>長崎県</option>
+              <option>熊本県</option><option>大分県</option><option>宮崎県</option>
+              <option>鹿児島県</option><option>沖縄県</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>ご希望の職種</label>
+            <select name="job_type">
+              <option value="">選択してください</option>
+              <option>介護福祉士</option>
+              <option>ケアマネージャー</option>
+              <option>ヘルパー（初任者・実務者）</option>
+              <option>社会福祉士</option>
+              <option>精神保健福祉士</option>
+              <option>支援員・生活相談員</option>
+              <option>その他</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>転職・就職のご希望時期</label>
+            <select name="timing">
+              <option value="">選択してください</option>
+              <option>できるだけ早く</option>
+              <option>1〜3ヶ月以内</option>
+              <option>3〜6ヶ月以内</option>
+              <option>時期は未定（情報収集中）</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>ご希望・ご要望など（任意）</label>
+            <textarea name="message" placeholder="勤務地・勤務時間・給与など、ご希望があればご記入ください"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>
+              <input type="checkbox" name="privacy">
+              <a href="privacy.html" style="color:#2e8b57;">プライバシーポリシー</a>に同意する
+            </label>
+          </div>
+
+          <div class="form-submit">
+            <button type="submit">送信する</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <h3>株式会社エモーショナルエージェント</h3>
+        <p>福祉・介護分野に特化した人材紹介会社</p>
+      </div>
+      <div>
+        <h3>サイトメニュー</h3>
+        <ul>
+          <li><a href="about.html">私たちについて</a></li>
+          <li><a href="services.html">事業内容</a></li>
+          <li><a href="staff.html">スタッフ紹介</a></li>
+          <li><a href="careers.html">採用情報</a></li>
+          <li><a href="job-form.html">求職者応募フォーム</a></li>
+          <li><a href="contact.html">お問い合わせ</a></li>
+          <li><a href="privacy.html">プライバシーポリシー</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copyright">&copy; 2026 株式会社エモーショナルエージェント All Rights Reserved.</p>
+  </footer>
+
+</body>
+</html>
