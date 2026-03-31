@@ -403,7 +403,7 @@
       border-radius: 0 0 4px 4px;
     }
     .closing-card .card-label {
-      font-size: 11px;
+      font-size: 15px;
       color: var(--accent);
       font-weight: 700;
       letter-spacing: 0.1em;
@@ -441,9 +441,9 @@
     自部署の業務を「バイブコーディング」で自動化・ワークフロー化する
   </p>
   <div class="meta">
-    <div class="meta-item">対象<span>各部署マネージャー（非エンジニア）</span></div>
+    <div class="meta-item">対象<span>各部署役職者</span></div>
     <div class="meta-item">所要時間<span>120分</span></div>
-    <div class="meta-item">使用ツール<span>Claude / GitHub（ブラウザ操作）</span></div>
+    <div class="meta-item">使用ツール<span>Claude.ai / GitHub</span></div>
   </div>
 </div>
 
@@ -451,14 +451,16 @@
 <div class="slide slide-content">
   <h2>本研修のコア・メッセージ</h2>
   <div class="quote-block">
-    <p>「業務のAI化とは、業務の再現性をつくることと同義であり、<br>仕事のマネジメントの一要素である」</p>
+    <p>業務のAI化 ≒ 自動化<br>
+      ＝業務の再現性を作ること
+    </p>
     <p class="quote-sub">
       優秀な担当者の頭の中にあるノウハウ（属人化）を、AIへの指示書という形で言語化・型化する。<br>
-      「誰がやっても同じ高クオリティの成果が出る仕組み」を作ることが、これからのマネージャーの重要な役割。
+      <strong>誰（AI）がやっても同じクオリティの成果物が出る仕組み</strong>を作ることが、「仕事のマネジメント」として重要になる。
     </p>
   </div>
   <div class="point-box">
-    <strong>今日のゴール：</strong>自部署の業務をAIで自動化するワークフローを構築し、組織の資産としてGitHubに保存する。
+    <strong>今日のゴール：</strong>業務をAIに代替していく基本ステップの理解
   </div>
 </div>
 
@@ -468,31 +470,31 @@
   <table>
     <thead>
       <tr>
-        <th>時間</th>
+        <th>パート</th>
         <th>コンテンツ</th>
         <th>概要</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td class="td-time">15分</td>
+        <td class="td-time">前半</td>
         <td><span class="td-label">1</span>&nbsp; イントロダクション</td>
         <td>AIの組織利用、マネジメントとの関連、バイブコーディングとは</td>
       </tr>
       <tr>
-        <td class="td-time">25分</td>
-        <td><span class="td-label">2</span>&nbsp; 講師デモンストレーション</td>
+        <td></td>
+        <td><span class="td-label">2</span>&nbsp; デモンストレーション</td>
         <td>Claudeとのキャッチボール実演、GitHubへの保存手順</td>
       </tr>
       <tr>
-        <td class="td-time">60分</td>
-        <td><span class="td-label">3</span>&nbsp; ハンズオンワークショップ</td>
-        <td>自部署の業務課題設定、Claudeでの構築、GitHubへの保存</td>
+        <td class="td-time">後半</td>
+        <td><span class="td-label">3</span>&nbsp; 実際にやってみる</td>
+        <td>自部署の業務課題設定、Claudeで業務フローの切り出し、GitHubへの保存までを体験</td>
       </tr>
       <tr>
-        <td class="td-time">20分</td>
-        <td><span class="td-label">4</span>&nbsp; 成果発表・まとめ</td>
-        <td>参加者からのシェア、今後の運用についての総括</td>
+        <td></td>
+        <td><span class="td-label">4</span>&nbsp; 発表・まとめ</td>
+        <td>Claudeとのキャッチボール内容や実際に作ったものをシェア、まとめ</td>
       </tr>
     </tbody>
   </table>
@@ -504,7 +506,7 @@
   <div class="time-badge">15分</div>
   <h2>イントロダクション</h2>
   <p class="section-desc">
-    AIエージェントの現在地を理解し、マネージャーとして「業務の再現性」をどう作るかを考える。
+    AIエージェントの現在地を理解し、仕事のマネジメントの一環として「業務の再現性」をどう作るかを考える。
   </p>
 </div>
 
@@ -522,7 +524,8 @@
     </div>
   </div>
   <div class="point-box" style="margin-top:24px;">
-    <strong>本日使用：</strong>最高峰の論理的思考力を持つ「Claude」（Anthropic社）。自律型AIエージェントが、AIが自ら計画・実行する時代の到来を示している。
+    <strong>本日使用：</strong>高精度の生成AI「Claude」（Anthropic社）。<br>自然なやり取りができるほか、複雑な文脈を理解して自律的に課題を解決する「AIエージェント」としての活用方法が注目されている。<br>
+    「指示を忠実に守る新人」
   </div>
 </div>
 
@@ -534,41 +537,94 @@
   </div>
   <ul class="bullet-list">
     <li>AIは「優秀だが社内事情を知らない新入社員」と捉える</li>
-    <li>迷わず業務を完遂させるための<strong>「お仕事セット（指示書＋前提条件）」</strong>を作るのがマネージャーの役割</li>
+    <li>迷わず業務を完遂させるための<strong>「お仕事マニュアル（指示書＋前提条件）」</strong>を作るのがマネージャーの役割</li>
     <li>一度作れば、誰でも同じクオリティの成果が出せる仕組みになる</li>
     <li>その蓄積が、部署の「知的資産」になる</li>
   </ul>
+  <div class="point-box" style="margin-top:24px; font-size:16px; font-weight:700; text-align:center;">
+    AIへの指示書を作ること＝マネジメント業務の一部<br>
+    <span style="font-size:13px; font-weight:400; color:var(--sub);">ただし、最初から完璧な指示書は作れない。人間が確認しながら、少しずつ育てていくものでよい。</span>
+  </div>
+</div>
+
+<!-- ===== SLIDE 6.5: AIに任せられる仕事 ===== -->
+<div class="slide slide-content">
+  <h2>AIに任せられる仕事とは</h2>
+  <div class="quote-block">
+    <p>誰でもできる仕事は、AIでもできる仕事。</p>
+    <p class="quote-sub">手順が決まっている、判断基準が明確、繰り返し発生する——そういう仕事は、AIが最も得意とするところです。</p>
+  </div>
+  <div class="steps" style="margin-top:8px;">
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-body">
+        <h3>小さな仕事を少しずつAIへ</h3>
+        <p>一つひとつは小さくても、AIに任せられる仕事が増えるほど、まとまった業務の塊をAIが担えるようになる。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-number">2</div>
+      <div class="step-body">
+        <h3>人間はミスが起きやすい「要所」だけ確認する</h3>
+        <p>全部を人間が見なくていい。判断が難しい場面や、間違えると影響が大きい場面だけ、人間がチェックする。</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ===== SLIDE 7: ヒューマンインザループ ===== -->
 <div class="slide slide-content">
   <h2>大きな自動化は「小さな一歩」の積み重ね</h2>
-  <div class="hitl-flow">
-    <div class="hitl-box hitl-task">小さな<br>自動化</div>
-    <div class="hitl-arrow">&#8594;</div>
-    <div class="hitl-box hitl-check">人間が<br>チェック</div>
-    <div class="hitl-arrow">&#8594;</div>
-    <div class="hitl-box hitl-task">小さな<br>自動化</div>
-    <div class="hitl-arrow">&#8594;</div>
-    <div class="hitl-box hitl-check">人間が<br>チェック</div>
-    <div class="hitl-arrow">&#8594;</div>
-    <div class="hitl-dots">&#8230;</div>
-    <div class="hitl-arrow">&#8594;</div>
-    <div class="hitl-box hitl-result">大きな<br>自動化</div>
-  </div>
-  <div class="two-col">
-    <div class="col-card">
-      <h3>ヒューマンインザループとは</h3>
-      <p>AIが処理を進める各工程に、人間が確認・判断を挟む仕組みのこと。現時点では、AIを完全に独り立ちさせるのではなく、人間が要所でチェックすることで品質と安全性を担保する。</p>
+  <div style="display:flex; align-items:center; gap:16px; margin: 24px 0 20px;">
+
+    <!-- 3つの小ブロック -->
+    <div style="display:flex; flex-direction:column; gap:10px; flex:1;">
+      
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div class="hitl-box hitl-task" style="flex:1; text-align:center;">小さな自動化</div>
+        <div class="hitl-arrow">&#8594;</div>
+        <div class="hitl-box hitl-check" style="flex:1; text-align:center;">人間が確認</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div class="hitl-box hitl-task" style="flex:1; text-align:center;">小さな自動化</div>
+        <div class="hitl-arrow">&#8594;</div>
+        <div class="hitl-box hitl-check" style="flex:1; text-align:center;">人間が確認</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div class="hitl-box hitl-task" style="flex:1; text-align:center;">小さな自動化</div>
+        <div class="hitl-arrow">&#8594;</div>
+        <div class="hitl-box hitl-check" style="flex:1; text-align:center;">人間が確認</div>
+      </div>
+      <div style="font-size:11px; color:var(--accent); font-weight:700; letter-spacing:0.08em; margin-bottom:2px;">
+        ※ 人間が確認を挟む工程を「ヒューマンインザループ」と呼ぶ
+      </div>
     </div>
-    <div class="col-card">
-      <h3>だからこそ、小さく始める</h3>
-      <p>最初から全工程を自動化しようとしなくていい。「この一作業だけAIに任せてみる」という小さな積み重ねが、やがて部署全体の大きな自動化につながる。</p>
+
+    <!-- 統合の矢印 -->
+    <div style="display:flex; flex-direction:column; align-items:center; gap:2px; color:var(--border); font-size:22px; line-height:1;">
+      <span>&#8599;</span>
+      <span>&#8594;</span>
+      <span>&#8600;</span>
     </div>
+
+    <!-- 大きな自動化 -->
+    <div class="hitl-box hitl-result" style="padding: 24px 20px; font-size:15px; white-space:nowrap;">
+      大きな<br>自動化
+    </div>
+
   </div>
   <div class="point-box">
-    <strong>今日の研修の位置づけ：</strong>その「最初の小さな一歩」を、実際に手を動かして体験する場です。
+    <strong>「最初の小さな自動化」を、実際に手を動かして体験し理解を深めましょう。
   </div>
+</div>
+
+<!-- ===== SLIDE 7.5: 手を動かす前に ===== -->
+<div class="slide slide-section">
+  <h2>手を動かす前に…</h2>
+  <p class="section-desc">
+    Cluadeは、自動化されたフローを作る際に裏でコードを書いています。<br>
+    実践に入る前に、「バイブコーディング」「コードのバージョン管理」の概念に軽く触れておきます。
+  </p>
 </div>
 
 <!-- ===== SLIDE 8: バイブコーディングとは ===== -->
@@ -593,64 +649,107 @@
     </div>
   </div>
   <div class="point-box">
-    「感覚（バイブ）」でAIと会話しながら、業務の自動化ツールを直感的に作っていく新しい開発体験。
+    「感覚（バイブス）」でAIと会話しながら、業務の自動化ツールを直感的に作っていく新しい開発体験。
+  </div>
+</div>
+
+<!-- ===== SLIDE 8.5: コードのバージョン管理 ===== -->
+<div class="slide slide-content">
+  <h2>コードのバージョン管理</h2>
+  <div class="quote-block">
+    <p>Claudeと作ったコード（業務フロー）は、<br>個人のパソコンやアカウントだけで使うだけでは属人化したまま</p>
+    <p class="quote-sub">
+    チームで共有・更新・継承できる状態にして初めて、「組織」の財産になります。</p>
+  </div>
+  <div class="two-col" style="margin-top:8px;">
+    <div class="col-card">
+      <h3>バージョン管理がないと…</h3>
+      <ul>
+        <li>「前の版の方がよかった」が戻せない</li>
+        <li>誰が・いつ・何を変えたかわからない</li>
+        <li>担当者が変わると引き継げない</li>
+        <li>同じフローを別の人が一から作り直す</li>
+      </ul>
+    </div>
+    <div class="col-card">
+      <h3>バージョン管理があると…</h3>
+      <ul>
+        <li>変更履歴が自動で残り、いつでも過去に戻せる</li>
+        <li>チーム全員が同じ最新版を使える</li>
+        <li>改善のたびに蓄積され、フローが育っていく</li>
+        <li>部署の「業務ノウハウ」が組織に残る</li>
+      </ul>
+    </div>
   </div>
 </div>
 
 <!-- ===== SLIDE 9: なぜGitHubを使うのか ===== -->
 <div class="slide slide-content">
-  <h2>なぜGitHubを使うのか</h2>
+  <h2>バージョン管理はGitHubが定番</h2>
   <div class="two-col">
     <div class="col-card">
-      <h3>よくある誤解</h3>
-      <p>「GitHubはエンジニアがプログラムを置く場所」</p>
+      <h3>Githubって？</h3>
+      <p>世界中の開発者がプログラムのソースコードを保存、共有、共同開発できるWeb上のサービス。</p>
     </div>
     <div class="col-card">
       <h3>本研修での位置づけ</h3>
-      <p>「AI時代の<strong>業務マニュアル資産管理ツール</strong>」</p>
+      <p>AIが作った工程を<strong>そのまま保存・共有・共同開発できる</strong>ワークフローデータベース</p>
     </div>
   </div>
   <ul class="bullet-list" style="margin-top:24px;">
     <li>作成したプロンプトやワークフローを、チーム全員がいつでも参照・利用できる</li>
     <li>変更履歴が自動保存されるため、「以前のバージョンに戻す」が簡単</li>
-    <li>ブラウザだけで操作でき、専門知識は不要</li>
-    <li>今日の成果が、明日から使える「組織の資産」になる</li>
+    <li>ローカルファイルと連携させることで外出先でもパソコンで作った業務フローや成果物にアクセスできる</li>
   </ul>
+  <div class="point-box">初めは英語だらけで拒否感があると思いますが、慣れれば強力なサポートツールです。日本語の解説記事も多いので、ぜひ勉強してみてください。</div>
 </div>
 
 <!-- ===== SLIDE 10: Section - デモ ===== -->
 <div class="slide slide-section">
   <div class="section-number">SECTION 02</div>
-  <div class="time-badge">25分</div>
-  <h2>講師デモンストレーション</h2>
+  <h2>デモンストレーション</h2>
   <p class="section-desc">
-    実際の業務を題材に、Claudeとのキャッチボールと、GitHubへの保存手順をリアルタイムで実演します。
+    実際の業務を題材に、Claudeとのキャッチボールと、GitHubへの保存手順の流れを紹介
   </p>
 </div>
 
 <!-- ===== SLIDE 11: デモの内容 ===== -->
 <div class="slide slide-content">
-  <h2>デモンストレーションの流れ</h2>
+  <h2>実践の流れ</h2>
   <div class="steps">
     <div class="step">
       <div class="step-number">1</div>
       <div class="step-body">
         <h3>業務テーマを設定する</h3>
-        <p>例：「週次報告の自動要約」「企画書の骨子作成」など、実際の業務を題材に選定。</p>
+        <p>例：「WEBサイトの作成」「生データから集計データ作成」など、実際の業務を題材に選定。</p>
       </div>
     </div>
     <div class="step">
       <div class="step-number">2</div>
       <div class="step-body">
-        <h3>Claudeとのキャッチボールを実演する</h3>
-        <p>一発で完璧な答えを求めず、「ここをもっと具体的に」「出力形式をテーブルにして」など、AIの回答を見ながら軌道修正していく過程を見せます。</p>
+        <h3>Claudeとのキャッチボール</h3>
+        <p>一発で完璧な答えを求めず、「上下のセクションで同じレイアウトを使わないで」「年月表記は生データから取得して」など、AIの回答を見ながら軌道修正する</p>
+        <div style="margin-top:12px; border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:0 4px 4px 0; padding:10px 14px; background:var(--white);">
+          <span style="display:inline-block; background:var(--accent); color:#fff; font-size:10px; font-weight:700; letter-spacing:0.1em; padding:2px 8px; border-radius:2px; margin-bottom:6px;">POINT</span>
+          <p style="font-size:13px; color:var(--text); line-height:1.7; margin:0;">「これは絶対考慮してほしい」というルールが固まってきたら、<strong>「CLAUDE.mdに業務ルールとしてまとめて」</strong>と指示する。<br>
+          CLAUDE.mdはClaudeが作業前に読む専用の指示書（Gemの指示と同じようなもの）。一度書いておけば毎回言わなくてよくなる。</p>
+        </div>
       </div>
     </div>
     <div class="step">
       <div class="step-number">3</div>
       <div class="step-body">
         <h3>GitHubへ保存する（資産化）</h3>
-        <p>完成したプロンプトをテキスト化し、ブラウザ上で自分の部署フォルダに保存するまでを実演。[Add file] → [Create new file] → [Commit changes] の流れを確認します。</p>
+        <p>及第点の成果物が出るようになってきたら、一度作成されたものをGithubへ保存。<br>
+        「プッシュして」⇒PRを作成⇒PRを表示⇒マージ</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-number">4</div>
+      <div class="step-body">
+        <h3>フローをブラッシュアップ</h3>
+        <p>より理想に近い結果が得られるように、さらにClaudeとやり取りを重ね、プッシュしまくる。<br>
+        コードの履歴は自動的にGithubに記録されるので安心。<br>（Claudにコミット履歴を読み取らせたら、自分の思考の癖も分析してくれるかも）</p>
       </div>
     </div>
   </div>
@@ -662,26 +761,32 @@
   <div class="time-badge">60分</div>
   <h2>ハンズオンワークショップ</h2>
   <p class="section-desc">
-    自部署の業務を実際に自動化してみましょう。作ったものをその場でGitHubに保存します。
+    自部署の業務を実際に自動化してみましょう。<br>作ったものをその場でGitHubに保存します。
   </p>
 </div>
 
 <!-- ===== SLIDE 13: ハンズオン3ステップ ===== -->
 <div class="slide slide-content">
-  <h2>ハンズオン 3ステップ</h2>
+  <h2>実践 3ステップ</h2>
   <div class="steps">
     <div class="step">
       <div class="step-number">1</div>
       <div class="step-body">
-        <h3>課題設定（5分）</h3>
-        <p>「再現性を持たせたい・自動化したい」業務を1つ選ぶ。実際の顧客データや機密情報はダミーに置き換えること。</p>
+        <h3>課題設定</h3>
+        <p>「再現性を持たせたい・自動化したい」業務を1つ選ぶ。実際の顧客データや機密情報はダミーに置き換えること。<br>
+        参考：先日回答いただいたAI化希望業務リスト</p>
       </div>
     </div>
     <div class="step">
       <div class="step-number">2</div>
       <div class="step-body">
-        <h3>Claudeとのキャッチボールによる構築（40分）</h3>
-        <p>選んだ業務をAIに実行させるためのプロンプト・ワークフローを構築する。詰まったら講師に声をかけてください。</p>
+        <h3>Claudeとのキャッチボールによる構築</h3>
+        <p>選んだ業務のワークフローを、Claudeに相談しながら構築する。<br>詰まったら河村に声をかけてください。</p>
+        <div style="margin-top:12px; border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:0 4px 4px 0; padding:10px 14px; background:var(--white);">
+          <span style="display:inline-block; background:var(--accent); color:#fff; font-size:10px; font-weight:700; letter-spacing:0.1em; padding:2px 8px; border-radius:2px; margin-bottom:6px;">POINT</span>
+          <p style="font-size:13px; color:var(--text); line-height:1.7; margin:0;">「これは絶対考慮してほしい」というルールが固まってきたら、<strong>「CLAUDE.mdに業務ルールとしてまとめて」</strong>と指示する。<br>
+          CLAUDE.mdはClaudeが作業前に読む専用の指示書（Gemの指示と同じようなもの）。一度書いておけば毎回言わなくてよくなる。</p>
+        </div>
       </div>
     </div>
     <div class="step">
@@ -700,29 +805,33 @@
   <div class="time-badge">20分</div>
   <h2>成果発表・まとめ</h2>
   <p class="section-desc">
-    数名のマネージャーから発表してもらい、全体でノウハウを共有します。
+    Claudeとどんなやり取りをしたか共有しよう
   </p>
 </div>
 
 <!-- ===== SLIDE 15: まとめ ===== -->
 <div class="slide slide-ending">
-  <h2>今日の成果と、これからへ</h2>
+  <h2>業務は小さな手順と判断の集まり</h2>
   <div class="closing-cards">
     <div class="closing-card">
-      <div class="card-label">TODAY'S OUTPUT</div>
-      <p>今日GitHubに保存されたファイルは、明日から誰でも使える「新しい業務マニュアル」</p>
+      <h3 class="card-label">小さな自動化の一歩</h3>
+      <p>今日作成したフローは、インパクトはなくとも、大きな改善に向けた第一歩。</p>
     </div>
     <div class="closing-card">
-      <div class="card-label">KEY TAKEAWAY</div>
-      <p>「業務の再現性を作る＝マネジメント」。AIへの指示書が、部署の知的資産になる</p>
+      <h3 class="card-label">小さな自動化から再現性ある業務フローへ</h3>
+      <p>小さな自動化が積み重なって、業務の再現性につながっていく。業務フロー自体が属人化しない共有資産になるから、新しく入る人も自分自身も楽になる。
+      </p>
     </div>
     <div class="closing-card">
-      <div class="card-label">NEXT STEP</div>
-      <p>このリポジトリを組織の資産として育て続ける。プロンプトは更新・改善を繰り返せる</p>
+      <h3 class="card-label">業務工程単位でPDCAを回し続ける</h3>
+      <p>今日作ったものやこれまで試しに作ったものが満足いかなくくても、泥臭く改善し続ける。コードの変更履歴がまた資産になる。
+      </p>
     </div>
   </div>
   <div class="quote-block" style="margin-top:28px;">
-    <p style="font-size:16px;">「業務のAI化とは、業務の再現性をつくることと同義であり、<br>仕事のマネジメントの一要素である」</p>
+    <p style="font-size:16px;">業務のAI化＝業務の再現性をつくること。<br>
+    実態は泥臭いですが、頑張りましょう！<br>
+  ご相談は口頭でも、「<a href="https://www.chatwork.com/#!rid430247300" target="_blank">なんでも相談チャット</a>」でも歓迎です</p>
   </div>
 </div>
 
