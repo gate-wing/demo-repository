@@ -118,9 +118,17 @@ def main():
     # 月別集計
     monthly = combined.groupby('月').agg(
         表示回数合計=('表示回数', 'sum'),
+        表示回数平均=('表示回数', 'mean'),
+        表示回数中央値=('表示回数', 'median'),
         アクション数合計=('アクション数', 'sum'),
+        アクション数平均=('アクション数', 'mean'),
+        アクション数中央値=('アクション数', 'median'),
         店舗数=('ビジネス名', 'count')
     ).reset_index()
+    monthly['表示回数平均'] = monthly['表示回数平均'].round(1)
+    monthly['表示回数中央値'] = monthly['表示回数中央値'].round(1)
+    monthly['アクション数平均'] = monthly['アクション数平均'].round(1)
+    monthly['アクション数中央値'] = monthly['アクション数中央値'].round(1)
     monthly['アクション率(%)'] = (
         monthly['アクション数合計'] / monthly['表示回数合計'] * 100
     ).round(2)
@@ -128,9 +136,21 @@ def main():
     # エリア別集計
     area = combined.groupby('エリア').agg(
         表示回数合計=('表示回数', 'sum'),
+        表示回数平均=('表示回数', 'mean'),
+        表示回数中央値=('表示回数', 'median'),
         アクション数合計=('アクション数', 'sum'),
+        アクション数平均=('アクション数', 'mean'),
+        アクション数中央値=('アクション数', 'median'),
+        アクション率平均=('アクション率(%)', 'mean'),
+        アクション率中央値=('アクション率(%)', 'median'),
         店舗数=('ビジネス名', 'count')
     ).reset_index().sort_values('表示回数合計', ascending=False)
+    area['表示回数平均'] = area['表示回数平均'].round(1)
+    area['表示回数中央値'] = area['表示回数中央値'].round(1)
+    area['アクション数平均'] = area['アクション数平均'].round(1)
+    area['アクション数中央値'] = area['アクション数中央値'].round(1)
+    area['アクション率平均'] = area['アクション率平均'].round(2)
+    area['アクション率中央値'] = area['アクション率中央値'].round(2)
     area['アクション率(%)'] = (
         area['アクション数合計'] / area['表示回数合計'] * 100
     ).round(2)
@@ -208,8 +228,16 @@ def main():
         total_rate = round(total_action / total_display * 100, 2) if total_display > 0 else 0
         best_month = monthly.loc[monthly['アクション率(%)'].idxmax(), '月']
         worst_month = monthly.loc[monthly['アクション率(%)'].idxmin(), '月']
-        best_area = area.iloc[0]['エリア']
-        top_action_area = area.loc[area['アクション率(%)'].idxmax(), 'エリア']
+
+        top_display_area_row = area.loc[area['表示回数平均'].idxmax()]
+        top_display_area_name = top_display_area_row['エリア']
+        top_display_area_avg = top_display_area_row['表示回数平均']
+        top_display_area_med = top_display_area_row['表示回数中央値']
+
+        top_action_area_row = area.loc[area['アクション率平均'].idxmax()]
+        top_action_area_name = top_action_area_row['エリア']
+        top_action_area_avg = top_action_area_row['アクション率平均']
+        top_action_area_med = top_action_area_row['アクション率中央値']
 
         summary_data = [
             ('総表示回数', f'{total_display:,} 回'),
@@ -217,8 +245,8 @@ def main():
             ('平均アクション率', f'{total_rate} %'),
             ('最もアクション率が高い月', best_month),
             ('最もアクション率が低い月', worst_month),
-            ('表示回数トップエリア', best_area),
-            ('アクション率トップエリア', top_action_area),
+            ('表示回数トップエリア（1店舗平均）', f'{top_display_area_name}　平均: {top_display_area_avg:,.1f} 回 ／ 中央値: {top_display_area_med:,.1f} 回'),
+            ('アクション率トップエリア（平均）', f'{top_action_area_name}　平均: {top_action_area_avg} % ／ 中央値: {top_action_area_med} %'),
         ]
 
         for i, (label, value) in enumerate(summary_data):
@@ -245,7 +273,7 @@ def main():
         ws[f'A{trend_start}'].alignment = left
         ws.row_dimensions[trend_start].height = 25
 
-        headers = ['月', '表示回数', 'アクション数', '店舗数', 'アクション率(%)']
+        headers = ['月', '表示回数合計', '表示回数平均', '表示回数中央値', 'アクション数合計', 'アクション数平均', 'アクション数中央値', '店舗数', 'アクション率(%)']
         header_row = trend_start + 1
         for col_i, h in enumerate(headers, 1):
             cell = ws.cell(row=header_row, column=col_i, value=h)
@@ -256,8 +284,11 @@ def main():
 
         for r_i, row_data in monthly.iterrows():
             data_row = header_row + 1 + r_i
-            values = [row_data['月'], int(row_data['表示回数合計']), int(row_data['アクション数合計']),
-                      int(row_data['店舗数']), row_data['アクション率(%)']]
+            values = [
+                row_data['月'], int(row_data['表示回数合計']), row_data['表示回数平均'], row_data['表示回数中央値'],
+                int(row_data['アクション数合計']), row_data['アクション数平均'], row_data['アクション数中央値'],
+                int(row_data['店舗数']), row_data['アクション率(%)']
+            ]
             for col_i, val in enumerate(values, 1):
                 cell = ws.cell(row=data_row, column=col_i, value=val)
                 cell.font = body_font
@@ -269,14 +300,14 @@ def main():
         area_start = header_row + 1 + len(monthly) + 2
 
         # ── エリア別ランキング ──
-        ws.merge_cells(f'A{area_start}:F{area_start}')
+        ws.merge_cells(f'A{area_start}:I{area_start}')
         ws[f'A{area_start}'] = '■ エリア別ランキング（表示回数順）'
         ws[f'A{area_start}'].font = Font(name='メイリオ', size=12, bold=True, color='FFFFFF')
         ws[f'A{area_start}'].fill = gray_fill
         ws[f'A{area_start}'].alignment = left
         ws.row_dimensions[area_start].height = 25
 
-        area_headers = ['エリア', '表示回数', 'アクション数', '店舗数', 'アクション率(%)']
+        area_headers = ['エリア', '表示回数合計', '表示回数平均', '表示回数中央値', 'アクション数合計', 'アクション数平均', 'アクション数中央値', 'アクション率平均(%)', 'アクション率中央値(%)']
         area_header_row = area_start + 1
         for col_i, h in enumerate(area_headers, 1):
             cell = ws.cell(row=area_header_row, column=col_i, value=h)
@@ -287,8 +318,11 @@ def main():
 
         for r_i, row_data in area.reset_index(drop=True).iterrows():
             data_row = area_header_row + 1 + r_i
-            values = [row_data['エリア'], int(row_data['表示回数合計']), int(row_data['アクション数合計']),
-                      int(row_data['店舗数']), row_data['アクション率(%)']]
+            values = [
+                row_data['エリア'], int(row_data['表示回数合計']), row_data['表示回数平均'], row_data['表示回数中央値'],
+                int(row_data['アクション数合計']), row_data['アクション数平均'], row_data['アクション数中央値'],
+                row_data['アクション率平均'], row_data['アクション率中央値']
+            ]
             for col_i, val in enumerate(values, 1):
                 cell = ws.cell(row=data_row, column=col_i, value=val)
                 cell.font = body_font
@@ -299,11 +333,14 @@ def main():
 
         # 列幅を調整
         ws.column_dimensions['A'].width = 28
-        ws.column_dimensions['B'].width = 18
-        ws.column_dimensions['C'].width = 18
-        ws.column_dimensions['D'].width = 18
-        ws.column_dimensions['E'].width = 18
-        ws.column_dimensions['F'].width = 18
+        ws.column_dimensions['B'].width = 16
+        ws.column_dimensions['C'].width = 16
+        ws.column_dimensions['D'].width = 16
+        ws.column_dimensions['E'].width = 16
+        ws.column_dimensions['F'].width = 16
+        ws.column_dimensions['G'].width = 16
+        ws.column_dimensions['H'].width = 18
+        ws.column_dimensions['I'].width = 18
 
     print(f'\n完了！{output_file} を開いて結果を確認してください。')
     print(f'\n概要:')
