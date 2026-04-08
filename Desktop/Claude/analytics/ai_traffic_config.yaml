@@ -1,0 +1,35 @@
+# AI参照トラフィック横断分析 設定ファイル
+
+google_auth:
+  credentials_json_path: ./credentials.json
+  token_json_path: ./token.json
+
+# 対象GA4アカウント（部分一致）
+target_account_name: "ぐっとくるダイニング"
+
+# 分析期間（直近N ヶ月）
+period:
+  months: 12
+
+# 対象AIエンジン定義
+ai_sources:
+  - name: ChatGPT
+    domains:
+      - openai.com
+      - chatgpt.com
+  - name: Gemini
+    domains:
+      - gemini.google.com
+      - bard.google.com
+  - name: Perplexity
+    domains:
+      - perplexity.ai
+  - name: Microsoft Copilot
+    domains:
+      - copilot.microsoft.com
+  - name: Claude
+    domains:
+      - claude.ai
+
+# 出力ファイル名プレフィックス
+output_prefix: "ai_traffic"
